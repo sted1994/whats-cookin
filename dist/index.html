@@ -2,10 +2,29 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>Whats Cookin</title>
+    <title>What's Cookin'</title>
   </head>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300&display=swap" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="../src/styles.css">
   <body>
-    <h1>Whats Cookin</h1>
+    <nav class="nav-bar">
+      <p class="nav-button">Home</p>
+      <p class="nav-button">Saved Recipes</p>
+      <p class="nav-button">Shopping List</p>
+    </nav>
+    <main class="main">
+      <h1>What's Cookin'</h1>
+    </main>
+    <section class="recipe-selection hidden">
+    </section>
+    <section class="my-recipes">
+    </section>
+    <section class="display-recipe">
+    </section>
+    <section class="shopping-list">
+    </section>
   </body>
   <!-- Do not include the scripts.js file here - it is done automatically by the webpack server -->
   <script src="bundle.js"></script>
