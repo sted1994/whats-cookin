@@ -5,12 +5,18 @@
   /* border: solid 1px black; */
 }
 
+*:focus {
+  outline: none;
+}
+
 body {
   background-image: url("images/thyme.jpeg");
   background-size: cover;
   background-repeat: no-repeat;
 
 }
+
+/*~~~~~~~~Nav Bar~~~~~~~~*/
 
 nav {
   background-color: #2F9056;
@@ -30,4 +36,57 @@ nav {
 h1 {
   text-align: center;
   margin-top: 50px;
+  font-size: 44px;
+}
+
+/*~~~~~~~My Recipe~~~~~~~*/
+
+.my-recipes-flexbox {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.my-recipes-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.7);
+  height: 600px;
+  width: 600px;
+  margin-top: 50px;
+  padding-top: 40px;
+  font-size: 24px;
+  border-radius: 10px;
+}
+
+.search-box {
+  display: flex;
+  margin-top: 60px;
+}
+
+#recipe-search-input {
+  margin-top: 60px;
+  width: 200px;
+  height: 30px;
+  font-size: 18px;
+  padding-left: 10px;
+  caret-color: #888f8a;
+  border: 0;
+  background-color: #c2e2c3;
+  border-radius: 10px;
+  box-shadow: 3px 3px 8px rgb(197, 203, 212)
+}
+
+.list {
+  padding-top: 50px;
+  list-style: none;
+}
+
+.list-item {
+  margin: 20px;
+}
+
+.hidden {
+  display: none;
 }
