@@ -14,7 +14,7 @@
       <p class="nav-button">Saved Recipes</p>
       <p class="nav-button">Shopping List</p>
     </nav>
-    <main class="main">
+    <main class="main hidden">
       <h1>What's Cookin'</h1>
         <div class="homepage-actions">
           <section class="search-bar">
@@ -40,10 +40,33 @@
     <section class="recipe-selection hidden">
     </section>
     <section class="my-recipes">
+      <h1 class="my-recipes-title">My Recipes</h1>
+      <div class="my-recipes-flexbox">
+        <div class="my-recipes-box" id="recipes-to-cook">
+          <h2 class="my-recipes-title">Recipes To Cook</h2>
+          <ul class="list">
+            <li class="list-item">Recipe 1</li>
+            <li class="list-item">Recipe 2</li>
+            <li class="list-item">Recipe 3</li>
+            <li class="list-item">Recipe 4</li>
+            <li class="list-item">Recipe 5</li>
+            <li class="list-item">Recipe 6</li>
+          </ul>
+        </div>
+        <div class="my-recipes-box" id="fav-recipes">
+          <h2 class="my-recipes-title">Favorite Recipes</h2>
+          <input type="text" id="recipe-search-input" name="recipe-search" placeholder="  Search Recipes">
+          <ul class="list">
+            <li class="list-item">Recipe A</li>
+            <li class="list-item">Recipe B</li>
+            <li class="list-item">Recipe C</li>
+          </ul>
+        </div>
+      </div>
     </section>
-    <section class="display-recipe">
+    <section class="display-recipe hidden">
     </section>
-    <section class="shopping-list">
+    <section class="shopping-list hidden">
     </section>
   </body>
   <!-- Do not include the scripts.js file here - it is done automatically by the webpack server -->
