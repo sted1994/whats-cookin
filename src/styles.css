@@ -1,6 +1,4 @@
 * {
-  margin: 0px;
-  padding: 0px;
   font-family: Quicksand;
   /* border: solid 1px black; */
 }
@@ -18,9 +16,11 @@ nav {
   justify-content: space-around;
   align-items: flex-end;
   padding-top: 10px;
+  margin: 0px;
 }
 
 .nav-button {
+  margin-bottom: 0;
   background-color: #c2e2c3;
   padding: 15px;
   border-top-left-radius: 6px;
@@ -30,4 +30,115 @@ nav {
 h1 {
   text-align: center;
   margin-top: 50px;
+}
+
+
+
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~Carousel~~~~~~~~~~~~~~~~~~~*/
+.search-bar{
+  height: 45px;
+  width: 90%;
+  text-align: center;
+  border-radius: 10px;
+  font-size: 30px;
+  justify-content: center;
+
+}
+.mag-btn{
+  height: 45px;
+  border-radius: 10px;
+}
+
+.mag-btn:hover{
+  background-color: #c2e2c3;
+  height: 50px;
+  width: 50px;
+}
+
+.magnifier-icon{
+  width:30px;
+}
+
+.main{
+  display:flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+
+.homepage-actions{
+  background-color: rgba(255,255,255, .5);
+  height: 600px;
+  width: 50%;
+  margin-top: 5%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.carousel{
+  height: 500px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: grey;
+  padding: 60px;
+}
+
+.carousel__track{
+  display: flex;
+  flex-direction: row;
+
+}
+.carousel__track-content{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.carousel__heading{
+  text-align: center;
+  margin: 0px;
+}
+
+.carousel__slide{
+  width: 130px;
+  height: 130px;
+  border-radius: 100%;
+}
+.carousel__button{
+  width: 20px;
+  height: 20px;
+}
+
+.carousel__button:hover{
+  height: 30px;
+  width: 30px;
+  margin: 5px;
+  background-color: #c2e2c3;
+}
+
+.carousel__list{
+  list-style: none;
+  margin: 15px;
+}
+
+.carousel__nav{
+  display: flex;
+  justify-content: center;
+}
+
+.carousel__indicator{
+  height:10px;
+  width: 20px;
+}
+
+.carousel__track{
+  overflow-x: scroll;
+  display: flex;
+  align-items: center;
+  width:50%;
 }
