@@ -10,11 +10,11 @@ import './images/pork.png';
 import './images/right-arrow.png';
 import './images/thyme.png';
 import './images/vegitarian.png';
-import './data/ingredients';
+import { ingredientsData } from './data/ingredients';
 import './data/recipes';
 import './data/users';
-import './classes/RecipeCard';
-import './classes/RecipeRepository';
+import { RecipeCard } from './classes/RecipeCard';
+import { RecipeRepository } from './classes/RecipeRepository';
 import { recipeData } from './data/recipes'
 
 const mainPage = document.querySelector('.main')
@@ -25,15 +25,34 @@ const allRecipes = document.querySelector(".all-recipes")
 allRecipes.addEventListener('click', function(){
   toggleView(mainPage)
   toggleView(recipePage)
-  showAllRecipes()
+  showRecipes(recipeData)
 })
 
 const toggleView = (element) => {
   element.classList.toggle('hidden')
 }
 
-const showAllRecipes = () => {
-  // console.log(recipeData)
-  recipePage.innerText += recipeData
+const showRecipes = (recipeInfo) => {
+  let renderer = " ";
+  const newRecipeRepository = new RecipeRepository(recipeInfo);
+  const renderRecipe = newRecipeRepository.recipes.map(recipe => {
+    const newRecipeCard = new RecipeCard(recipe);
+    const ingredientList = newRecipeCard.getIngredients(ingredientsData)
+    const displayList = ingredientList.reduce((string, ingredient) => {
+        string += `<li class="recipe-select-ingredient">${ingredient}</li>`
+        return string;
+      }, " ");
+    renderer +=
+    `<div class="recipe-select-box">
+       <h1 class="recipe-select-name">${recipe.name}</h1>
+       <div class="recipe-content-box">
+         <img class="recipe-pic" src="${recipe.image}" alt="Spaghetti">
+         <ul class="recipe-select-ingredients">
+          ${displayList}
+         </ul>
+       </div>
+     </div>`
+
+    recipePage.innerHTML = renderer;
+  });
 }
-console.log('Hello world');

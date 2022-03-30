@@ -1,5 +1,7 @@
 * {
   font-family: Quicksand;
+  margin: 0px;
+  padding: 0px;
   /* border: solid 1px black; */
 }
 
@@ -17,20 +19,21 @@ body {
 /*~~~~~~~~Nav Bar~~~~~~~~*/
 
 nav {
-  background-color: #2F9056;
+  /* background-color: #2F9056; */
+  background-image: linear-gradient(#2F9056, #65b87e);
   display: flex;
   justify-content: space-around;
   align-items: flex-end;
   padding-top: 10px;
-  margin: 0px;
 }
 
 .nav-button {
-  margin-bottom: 0;
   background-color: #c2e2c3;
+  cursor: pointer;
   padding: 15px;
   border-top-left-radius: 6px;
   border-top-right-radius: 6px;
+  box-shadow: 3px -3px 6px rgb(56, 117, 70);
 }
 
 h1 {
@@ -71,11 +74,12 @@ h1 {
   height: 30px;
   font-size: 18px;
   padding-left: 10px;
-  caret-color: #888f8a;
   border: 0;
+  text-align: center;
   background-color: #c2e2c3;
   border-radius: 10px;
-  box-shadow: 3px 3px 8px rgb(197, 203, 212)
+  box-shadow: 1px 1px 4px rgb(197, 203, 212);
+  box-shadow: -1px -1px 4px rgb(197, 203, 212);
 }
 
 .list {
@@ -198,6 +202,39 @@ h1 {
   display: flex;
   align-items: center;
   width:50%;
+}
+
+/* Recipe Select Page */
+
+.recipe-select-box {
+  background: rgba(255, 255, 255, 0.7);
+  width: 90vw;
+  margin-left: 30px;
+}
+
+.recipe-select-name {
+  text-align: left;
+  font-size: 30px;
+}
+
+.recipe-pic {
+  width: 100px;
+  height: 100px;
+}
+
+.recipe-select-ingredients {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.recipe-content-box {
+  display: flex;
+}
+
+.recipe-select-ingredient {
+  width: 100px;
+  margin-left: 20px;
+  margin-right: 20px;
 }
 
 .hidden {
