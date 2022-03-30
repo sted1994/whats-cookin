@@ -10,7 +10,6 @@ describe('Recipe Repository', () => {
     });
 
     it('Should be a function', () => {
-      //console.log(recipeCard)
       expect(RecipeRepository).to.be.a('function');
     });
 
@@ -20,8 +19,12 @@ describe('Recipe Repository', () => {
 
     it('should find recipes by tag', () => {
       recipeList.getRecipeByTag('snack')
-      console.log(recipeList.recipesByTag)
       expect(recipeList.recipesByTag).to.includes(recipeData[0])
+    })
+
+    it('should find recipes by name', () => {
+      recipeList.getRecipeByName("Cookie")
+      expect(recipeList.recipesByName).to.includes(recipeData[0])
     })
 
 })

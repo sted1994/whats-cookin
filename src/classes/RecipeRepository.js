@@ -1,7 +1,6 @@
 class RecipeRepository {
   constructor(recipes) {
     this.recipes = recipes;
-    this.recipesByTag;
   }
 
 getRecipeByTag(tagName) {
@@ -9,6 +8,13 @@ getRecipeByTag(tagName) {
     return recipe.tags.includes(tagName)
   })
   this.recipesByTag = recipesByTag;
+}
+
+getRecipeByName(name) {
+  const recipesByName = this.recipes.filter((recipe) => {
+    return recipe.name.includes(name)
+  })
+  this.recipesByName = recipesByName;
 }
 
 }
