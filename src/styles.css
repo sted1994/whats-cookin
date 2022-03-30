@@ -8,7 +8,7 @@
 }
 
 body {
-  background-image: url("images/thyme.jpeg");
+  background-image: url("images/thyme.png");
   background-size: cover;
   background-repeat: no-repeat;
 
@@ -87,9 +87,6 @@ h1 {
   margin: 20px;
 }
 
-.hidden {
-  display: none;
-}
 
 
 
@@ -116,6 +113,7 @@ h1 {
 
 .magnifier-icon{
   width:30px;
+  background-image: url("images/magnifying-glass.png");
 }
 
 .main{
@@ -200,4 +198,8 @@ h1 {
   display: flex;
   align-items: center;
   width:50%;
+}
+
+.hidden {
+  display: none;
 }

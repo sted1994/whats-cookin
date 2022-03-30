@@ -25,7 +25,6 @@ getIngredients(ingredients) {
 getCostOfIngredients(ingredients) {
   const ingredientList = this.ingredients.reduce((num, ingredient) => {
     const items = ingredients.forEach(item => {
-      //console.log(ingredient.quantity.amount)
       if(ingredient.id === item.id) {
         num += (item.estimatedCostInCents * ingredient.quantity.amount)
       }

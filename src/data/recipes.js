@@ -1,4 +1,4 @@
-const recipeData = [
+export const recipeData = [
     {
       "id": 595736,
       "image": "https://spoonacular.com/recipeImages/595736-556x370.jpg",
@@ -5381,4 +5381,4 @@ const recipeData = [
       ]
     }
   ]
-module.exports = {recipeData}
+// module.exports = {recipeData}
