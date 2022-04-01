@@ -35,8 +35,15 @@ getCostOfIngredients(ingredients) {
 };
 
 getInstructions() {
-  return this.instructions
-}
+  const instructionList = this.instructions.reduce((arr, instructions) => {
+    const items = instructions.instruction
+    arr.push(items)
+    return arr
+  }, [])
+  return instructionList
+};
+  
+
 
 };
 

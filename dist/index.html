@@ -16,7 +16,6 @@
     </nav>
     <main class="main">
       <h1>What's Cookin'</h1>
-
         <div class="homepage-actions">
           <section class="search-bar">
             <input class="search-bar" id="search-input" type="text" placeholder="WHATS ON THE MENU?">
@@ -38,26 +37,7 @@
         </div>
     </main>
     <section class="recipe-selection hidden">
-      <div class="recipe-select-box">
-        <h1 class="recipe-select-name">Spaghetti</h1>
-        <div class="recipe-content-box">
-          <img class="recipe-pic" src="images/vegitarian.png" alt="Spaghetti">
-          <ul class="recipe-select-ingredients">
-            <li class="recipe-select-ingredient">Noodles</li>
-            <li class="recipe-select-ingredient">Red Sauce</li>
-            <li class="recipe-select-ingredient">Cheese</li>
-            <li class="recipe-select-ingredient">Noodles</li>
-            <li class="recipe-select-ingredient">Red Sauce</li>
-            <li class="recipe-select-ingredient">Cheese</li>
-            <li class="recipe-select-ingredient">Noodles</li>
-            <li class="recipe-select-ingredient">Red Sauce</li>
-            <li class="recipe-select-ingredient">Cheese</li>
-            <li class="recipe-select-ingredient">Noodles</li>
-            <li class="recipe-select-ingredient">Red Sauce</li>
-            <li class="recipe-select-ingredient">Cheese</li>
-          </ul>
-        </div>
-      </div>
+      /*this will be where the recipes are generated*/
     </section>
     <section class="my-recipes hidden">
       <h1 class="my-recipes-title">My Recipes</h1>
@@ -85,10 +65,45 @@
       </div>
     </section>
     <section class="display-recipe hidden">
+      <h1 class="recipe-title">spagooter</h1>
+      <section class="recipe-card">
+        <header>
+          <p class="ingredient">Ingredients:</p>
+        </header>
+        <article class="ingredients-section">
+          <ul class="recipe-card-ingredients">
+            <li class="recipe-select-ingredient">Meeert serce: </li>
+            <li class="recipe-select-ingredient">bazl: </li>
+            <li class="recipe-select-ingredient">cherz: </li>
+            <li class="recipe-select-ingredient">air: </li>
+            <li class="recipe-select-ingredient">water: </li>
+            <li class="recipe-select-ingredient">salt: </li>
+            <li class="recipe-select-ingredient">tears: </li>
+            <li class="recipe-select-ingredient">salit: </li>
+          </ul>
+        </article>
+        <section class="cost-info-section">
+          <p class="recipe-cost">Ingredient Cost: $1,000,000</p>
+          <button class="add-ingredients-btn">ADD MEEEE!</button>
+        </section>
+        <p class="instructions-title">Instuctions:</p>
+        <article class="instructions">
+          <ol>
+            <li class="recipe-select-ingredient">liusndfbfbklnsdflnsd;nba</li>
+            <li class="recipe-select-ingredient">liusndfbfbklnsdflnsd;;oijsdfknbsdfnbusndfbnba</li>
+            <li class="recipe-select-ingredient">liusndfbffnfgngnfgbklnsdflnsd;nba</li>
+            <li class="recipe-select-ingredient">checkcheck1212checkcheck1212checkcheck1212</li>
+            <li class="recipe-select-ingredient">liusndfbfbklnsdflnsd;nbdfgncgdfgndfgndfgnxfgndfgndfgnhnda</li>
+          </ol>
+        </article>
+      </section>
+      <section>
+        <button class="recipes-to-cook-btn">Add To Saved Recipes</button>
+        <button class="recipes-to-fav-btn">Add To Favorites</button>
+      </section>
     </section>
     <section class="shopping-list hidden">
     </section>
   </body>
-  <!-- Do not include the scripts.js file here - it is done automatically by the webpack server -->
   <script src="bundle.js"></script>
 </html>
