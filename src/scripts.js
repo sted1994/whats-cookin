@@ -20,12 +20,23 @@ import { recipeData } from './data/recipes'
 const mainPage = document.querySelector('.main')
 const recipePage = document.querySelector('.recipe-selection')
 const allRecipes = document.querySelector(".all-recipes")
+const searchInput = document.getElementById("search-input")
+const magButton = document.querySelector(".mag-btn")
 // const { recipeData } = require('../src/data/recipes');
 
 allRecipes.addEventListener('click', function(){
+  const newRecipeRepository = new RecipeRepository(recipeData);
   toggleView(mainPage)
   toggleView(recipePage)
-  showRecipes(recipeData)
+  showRecipes(newRecipeRepository)
+})
+
+magButton.addEventListener('click', function() {
+  const newRecipeRepository = new RecipeRepository(recipeData);
+  newRecipeRepository.getRecipesBySearch(searchInput.value)
+  toggleView(mainPage)
+  toggleView(recipePage)
+  showRecipes(newRecipeRepository)
 })
 
 const toggleView = (element) => {
@@ -34,8 +45,7 @@ const toggleView = (element) => {
 
 const showRecipes = (recipeInfo) => {
   let renderer = " ";
-  const newRecipeRepository = new RecipeRepository(recipeInfo);
-  const renderRecipe = newRecipeRepository.recipes.map(recipe => {
+    recipeInfo.recipes.map(recipe => {
     const newRecipeCard = new RecipeCard(recipe);
     const ingredientList = newRecipeCard.getIngredients(ingredientsData)
     const displayList = ingredientList.reduce((string, ingredient) => {
