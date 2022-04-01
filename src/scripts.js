@@ -39,6 +39,17 @@ magButton.addEventListener('click', function() {
   showRecipes(newRecipeRepository)
 })
 
+document.addEventListener('keypress', function(event) {
+  if(event.key === "Enter"){
+    const newRecipeRepository = new RecipeRepository(recipeData);
+    newRecipeRepository.getRecipesBySearch(searchInput.value)
+    toggleView(mainPage)
+    toggleView(recipePage)
+    showRecipes(newRecipeRepository)
+  }
+
+})
+
 const toggleView = (element) => {
   element.classList.toggle('hidden')
 }
@@ -53,7 +64,7 @@ const showRecipes = (recipeInfo) => {
         return string;
       }, " ");
     renderer +=
-    `<div class="recipe-select-box">
+    `<div onclick="functionName()" class="recipe-select-box">
        <h1 class="recipe-select-name">${recipe.name}</h1>
        <div class="recipe-content-box">
          <img class="recipe-pic" src="${recipe.image}" alt="Spaghetti">
@@ -65,4 +76,8 @@ const showRecipes = (recipeInfo) => {
 
     recipePage.innerHTML = renderer;
   });
+
+  const showRecipeCard = () => {
+
+  }
 }
