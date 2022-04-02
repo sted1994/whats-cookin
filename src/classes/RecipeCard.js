@@ -1,6 +1,5 @@
 export class RecipeCard {
   constructor(recipe) {
-    this.recipe = recipe;
     this.name = recipe.name;
     this.ingredients = recipe.ingredients;
     this.image = recipe.image;
@@ -42,9 +41,6 @@ getInstructions() {
   }, [])
   return instructionList;
 };
-
-
-
 };
 
 export default RecipeCard;

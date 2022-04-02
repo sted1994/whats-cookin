@@ -15,23 +15,8 @@ export class User {
   };
 
   addToFavRecipes(favRecipe) {
-  //   if(this.favRecipes.includes(recipe)) {
-  //     console.log("HELP");
-  //   //  this.favRecipes.push(recipe)
-  // } else {
-  //   this.favRecipes.push(recipe)
-  //
-  // }
-  if(this.favRecipes.length === 0) {
-    this.favRecipes.push(favRecipe)
-  } else {
-  this.favRecipes.forEach((recipe) => {
-    if(this.favRecipes.includes(favRecipe)) {
-    } else {
-    this.favRecipes.push(favRecipe)
-  }
-  })
-}
+    if(!this.favRecipes.includes(favRecipe))
+      this.favRecipes.push(favRecipe)
   };
 
   removeFav(recipe) {
@@ -48,24 +33,10 @@ export class User {
 
     const recipesByName = this.favRecipes.forEach((recipe) => {
     let upperCaseInput = input[0].toUpperCase() + input.slice(1)
-          if(recipe.name.includes(input)) {
+      if(recipe.name.includes(input)) {
         this.filteredFavs.push(recipe)
       }
     })
-    // console.log("KINGSLEY", recipesByTag[0]);
-    // const recipesByName = this.favRecipes.filter((recipe) => {
-      // let upperCaseInput = input[0].toUpperCase() + input.slice(1)
-    //   return recipe[0].name.includes(upperCaseInput)
-    // })
-    //   const recipes = recipesByTag.map((recipe) => {
-    //   recipesByName.map((recipe2) => {
-    //     if(recipe.id === recipe2.id) {
-    //       recipesByTag.splice([recipe], 2)
-    //     }
-    //   })
-    // })
-    //this.favRecipes = recipesByTag
-    //.concat(recipesByName)
   }
 
 };
