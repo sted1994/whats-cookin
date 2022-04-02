@@ -1,6 +1,5 @@
 import './styles.css';
 import apiCalls from './apiCalls';
-// An example of how you tell webpack to use an image (also need to link to it in the index.html)
 import './images/turing-logo.png';
 import './images/chicken.png';
 import './images/beef.png';
@@ -40,11 +39,12 @@ const myRecipesTab = document.querySelector('.saved-recipes')
 const shoppingTab = document.querySelector('.shopping-list')
 const toCook = document.querySelector('.recipes-to-cook-list')
 const favorites = document.querySelector('.favorite-recipes-list')
+const favSearch = document.getElementById("recipe-search-input")
 
 
 
 document.addEventListener('keypress', function(event) {
-  if(event.key === "Enter"){
+  if(event.key === "Enter" && searchInput.value){
     const newRecipeRepository = new RecipeRepository(recipeData);
     newRecipeRepository.getRecipesBySearch(searchInput.value)
     hideElement(mainPage)
@@ -53,6 +53,12 @@ document.addEventListener('keypress', function(event) {
     hideElement(shoppingList)
     showElement(recipeSelectionPage)
     showRecipes(newRecipeRepository)
+    searchInput.value = ""
+  } else if(event.key === "Enter") {
+    currentUser.searchFavs(favSearch.value)
+    renderFavRecipes(currentUser.filteredFavs)
+    favSearch.value = ""
+
   }
 })
 
@@ -124,7 +130,11 @@ const showRecipeCard = (event) => {
   hideElement(myRecipes)
   hideElement(shoppingList)
   showElement(recipeCardPage)
-  currentRecipe = newRecipeRepository.recipes.filter(recipe => recipe.name === event)
+  newRecipeRepository.recipes.forEach(recipe => {
+    if(recipe.name === event) {
+      currentRecipe = new RecipeCard(recipe)
+    }
+  })
   formatRecipeCard(currentRecipe)
 }
 window.showRecipeCard = showRecipeCard;
@@ -136,22 +146,22 @@ const saveRecipe = (event) => {
     currentUser.addToFavRecipes(currentRecipe)
   }
   renderRecipesToCook()
-  renderFavRecipes()
+  renderFavRecipes(currentUser.favRecipes)
 }
 window.saveRecipe = saveRecipe;
 
 const deleteFavorite = (event) => {
   const newFavorites = currentUser.favRecipes.filter((recipe) => {
-    return recipe[0].name !== event.target.parentElement.innerText
+    return recipe.name !== event.target.parentElement.innerText
   })
   currentUser.favRecipes = newFavorites;
-  renderFavRecipes()
+  renderFavRecipes(currentUser.favRecipes)
 }
 window.deleteFavorite = deleteFavorite;
 
 
 const makeList = (recipe, method) => {
-  const newRecipeCard = new RecipeCard(recipe);;
+  const newRecipeCard = new RecipeCard(recipe);
   if(method === 'ingredient'){
     var list = newRecipeCard.getIngredients(ingredientsData)
     var displayList = list.reduce((string, ingredient) => {
@@ -187,14 +197,13 @@ const showRecipes = (recipeInfo) => {
   });
 }
 
-const formatRecipeCard = (currentRecipe) => {
-  const newRecipe = new RecipeCard(currentRecipe[0])
-  const ingredientList = makeList(currentRecipe[0], 'ingredient')
-  const instructionList = makeList(currentRecipe[0], 'instructions')
-  const price = newRecipe.getCostOfIngredients(ingredientsData)
+const formatRecipeCard = () => {
+  const ingredientList = makeList(currentRecipe, 'ingredient')
+  const instructionList = makeList(currentRecipe, 'instructions')
+  const price = currentRecipe.getCostOfIngredients(ingredientsData)
   let renderer = "";
   const card =
-  `<h1 class="recipe-title">${currentRecipe[0].name}</h1>
+  `<h1 class="recipe-title">${currentRecipe.name}</h1>
   <section class="recipe-card">
     <header>
       <p class="ingredient">Ingredients:</p>
@@ -228,14 +237,14 @@ const formatRecipeCard = (currentRecipe) => {
  const renderRecipesToCook = () => {
    toCook.innerHTML = '';
    currentUser.recipesToCook.map((recipe) => {
-   toCook.innerHTML += `<li class="list-item">${recipe[0].name}</li>`;
+   toCook.innerHTML += `<li class="list-item">${recipe.name}</li>`;
    })
  }
 
- const renderFavRecipes = () => {
+ const renderFavRecipes = (recipes) => {
    favorites.innerHTML = '';
-   currentUser.favRecipes.map((recipe) => {
+   recipes.map((recipe) => {
    favorites.innerHTML +=
-   `<li class="list-item">${recipe[0].name}<img onclick='deleteFavorite(event)' class="trashcan" src='images/delete.png'/></li>`
+   `<li class="list-item">${recipe.name}<img onclick='deleteFavorite(event)' class="trashcan" src='images/delete.png'/></li>`
  })
 }
