@@ -19,7 +19,10 @@ import { User } from './classes/User'
 import { recipeData } from './data/recipes'
 import { usersData } from './data/users'
 
-let newRecipeRepository = new RecipeRepository(recipeData);
+let recipeDataClasses = recipeData.map((recipe) => {
+  return new RecipeCard(recipe);
+})
+let newRecipeRepository = new RecipeRepository(recipeDataClasses);
 let currentUser;
 let currentRecipe;
 
@@ -45,7 +48,6 @@ const favSearch = document.getElementById("recipe-search-input")
 
 document.addEventListener('keypress', function(event) {
   if(event.key === "Enter" && searchInput.value){
-    const newRecipeRepository = new RecipeRepository(recipeData);
     newRecipeRepository.getRecipesBySearch(searchInput.value)
     hideElement(mainPage)
     hideElement(myRecipes)
@@ -132,7 +134,7 @@ const showRecipeCard = (event) => {
   showElement(recipeCardPage)
   newRecipeRepository.recipes.forEach(recipe => {
     if(recipe.name === event) {
-      currentRecipe = new RecipeCard(recipe)
+      currentRecipe = recipe
     }
   })
   formatRecipeCard(currentRecipe)

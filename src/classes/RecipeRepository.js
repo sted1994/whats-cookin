@@ -29,12 +29,10 @@ getRecipesBySearch(input) {
     recipesByName.map((recipe2) => {
       if(recipe.id === recipe2.id) {
         return
-        //recipesByTag.splice(recipe, 1)
       } else {
           recipesByName.concat(recipe2)
-        }
+      }
     })
-
   })
   this.recipes = recipesByName
 }
