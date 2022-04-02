@@ -91,7 +91,15 @@ h1 {
   margin: 20px;
 }
 
+.trashcan {
+  height: 22px;
+  margin-left: 5px;
 
+}
+
+.trashcan:hover {
+  cursor: pointer;
+}
 
 
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~Carousel~~~~~~~~~~~~~~~~~~~*/
