@@ -10,11 +10,13 @@ import './images/pork.png';
 import './images/right-arrow.png';
 import './images/thyme.png';
 import './images/vegitarian.png';
+import './images/delete.png'
 import { ingredientsData } from './data/ingredients';
 import './data/recipes';
 import './data/users';
 import { RecipeCard } from './classes/RecipeCard';
 import { RecipeRepository } from './classes/RecipeRepository';
+import { User } from './classes/User'
 import { recipeData } from './data/recipes'
 import { usersData } from './data/users'
 
@@ -36,6 +38,9 @@ const shoppingList = document.querySelector('.shopping-list-page')
 const homeTab = document.querySelector('.home')
 const myRecipesTab = document.querySelector('.saved-recipes')
 const shoppingTab = document.querySelector('.shopping-list')
+const toCook = document.querySelector('.recipes-to-cook-list')
+const favorites = document.querySelector('.favorite-recipes-list')
+
 
 
 document.addEventListener('keypress', function(event) {
@@ -52,7 +57,8 @@ document.addEventListener('keypress', function(event) {
 })
 
 window.addEventListener('load', function() {
-  currentUser = getRandomUser(usersData);
+  let randomUser = getRandomUser(usersData);
+  currentUser = new User(randomUser)
 })
 
 homeTab.addEventListener('click', function() {
@@ -125,12 +131,24 @@ window.showRecipeCard = showRecipeCard;
 
 const saveRecipe = (event) => {
   if(event === 'Add To Saved Recipes') {
-    user.recipesToCook.push(currentRecipe)
+    currentUser.addToCookRecipes(currentRecipe)
   } else if(event === 'Add To Favorites') {
-    user.favRecipes.push(currentRecipe)
+    currentUser.addToFavRecipes(currentRecipe)
   }
+  renderRecipesToCook()
+  renderFavRecipes()
 }
 window.saveRecipe = saveRecipe;
+
+const deleteFavorite = (event) => {
+  const newFavorites = currentUser.favRecipes.filter((recipe) => {
+    return recipe[0].name !== event.target.parentElement.innerText
+  })
+  currentUser.favRecipes = newFavorites;
+  renderFavRecipes()
+}
+window.deleteFavorite = deleteFavorite;
+
 
 const makeList = (recipe, method) => {
   const newRecipeCard = new RecipeCard(recipe);;
@@ -205,4 +223,19 @@ const formatRecipeCard = (currentRecipe) => {
     </section>`
   renderer = card;
   recipeCardPage.innerHTML = renderer;
+}
+
+ const renderRecipesToCook = () => {
+   toCook.innerHTML = '';
+   currentUser.recipesToCook.map((recipe) => {
+   toCook.innerHTML += `<li class="list-item">${recipe[0].name}</li>`;
+   })
+ }
+
+ const renderFavRecipes = () => {
+   favorites.innerHTML = '';
+   currentUser.favRecipes.map((recipe) => {
+   favorites.innerHTML +=
+   `<li class="list-item">${recipe[0].name}<img onclick='deleteFavorite(event)' class="trashcan" src='images/delete.png'/></li>`
+ })
 }
