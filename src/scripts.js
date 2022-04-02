@@ -20,6 +20,7 @@ import { usersData } from './data/users'
 
 let newRecipeRepository = new RecipeRepository(recipeData);
 let currentUser;
+let currentRecipe;
 
 const mainPage = document.querySelector('.main')
 const allRecipesTab = document.querySelector('.all-recipes')
@@ -35,6 +36,7 @@ const shoppingList = document.querySelector('.shopping-list-page')
 const homeTab = document.querySelector('.home')
 const myRecipesTab = document.querySelector('.saved-recipes')
 const shoppingTab = document.querySelector('.shopping-list')
+
 
 document.addEventListener('keypress', function(event) {
   if(event.key === "Enter"){
@@ -96,6 +98,8 @@ magButton.addEventListener('click', function() {
   showRecipes(newRecipeRepository)
 })
 
+
+
 const showElement = (element) => {
   element.classList.remove('hidden')
 }
@@ -104,42 +108,29 @@ const hideElement = (element) => {
   element.classList.add('hidden')
 }
 
+function getRandomUser(user) {
+  return user[Math.floor(Math.random() * user.length)];
+}
+
 const showRecipeCard = (event) => {
   hideElement(recipeSelectionPage)
   hideElement(mainPage)
   hideElement(myRecipes)
   hideElement(shoppingList)
   showElement(recipeCardPage)
-  const currentRecipe = newRecipeRepository.recipes.filter(recipe => recipe.name === event)
+  currentRecipe = newRecipeRepository.recipes.filter(recipe => recipe.name === event)
   formatRecipeCard(currentRecipe)
 }
-
 window.showRecipeCard = showRecipeCard;
 
-function getRandomUser(user) {
-  return user[Math.floor(Math.random() * user.length)];
+const saveRecipe = (event) => {
+  if(event === 'Add To Saved Recipes') {
+    user.recipesToCook.push(currentRecipe)
+  } else if(event === 'Add To Favorites') {
+    user.favRecipes.push(currentRecipe)
+  }
 }
-
-const showRecipes = (recipeInfo) => {
-
-
-  let renderer = " ";
-    recipeInfo.recipes.map(recipe => {
-    const ingredientList = makeList(recipe, "ingredient")
-    renderer +=
-    `<section class="recipe-select-box">
-       <h1 class="recipe-select-name">${recipe.name}</h1>
-       <div class="recipe-content-box">
-         <img class="recipe-pic" src="${recipe.image}" alt="Spaghetti">
-         <ul class="recipe-select-ingredients">
-          ${ingredientList}
-         </ul>
-       </div>
-       <button onclick="showRecipeCard(event.target.classList.value)" class="${recipe.name}">test</button>
-     </section>`
-    recipeSelectionPage.innerHTML = renderer;
-  });
-}
+window.saveRecipe = saveRecipe;
 
 const makeList = (recipe, method) => {
   const newRecipeCard = new RecipeCard(recipe);;
@@ -156,8 +147,26 @@ const makeList = (recipe, method) => {
     return string;
     }, " ");
 }
-
     return displayList
+}
+
+const showRecipes = (recipeInfo) => {
+  let renderer = " ";
+    recipeInfo.recipes.map(recipe => {
+    const ingredientList = makeList(recipe, "ingredient")
+    renderer +=
+    `<section class="recipe-select-box">
+       <h1 class="recipe-select-name">${recipe.name}</h1>
+       <div class="recipe-content-box">
+         <img class="recipe-pic" src="${recipe.image}" alt="Spaghetti">
+         <ul class="recipe-select-ingredients">
+          ${ingredientList}
+         </ul>
+       </div>
+       <button onclick="showRecipeCard(event.target.classList.value)" class="${recipe.name}">test</button>
+     </section>`
+    recipeSelectionPage.innerHTML = renderer;
+  });
 }
 
 const formatRecipeCard = (currentRecipe) => {
@@ -187,7 +196,13 @@ const formatRecipeCard = (currentRecipe) => {
         ${instructionList}
       </ol>
     </article>
-  </section>`
+    </section>
+    <section>
+      <button onclick="saveRecipe(event.target.innerText)"
+      class="recipes-to-cook-btn">Add To Saved Recipes</button>
+      <button onclick="saveRecipe(event.target.innerText)"
+      class="recipes-to-fav-btn">Add To Favorites</button>
+    </section>`
   renderer = card;
   recipeCardPage.innerHTML = renderer;
 }
