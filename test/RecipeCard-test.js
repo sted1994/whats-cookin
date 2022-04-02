@@ -1,5 +1,4 @@
 import { expect } from 'chai';
-import RecipeRepository from '../src/classes/RecipeRepository';
 import RecipeCard from '../src/classes/RecipeCard';
 const { recipeData } = require('../src/data/recipes');
 const { ingredientsData } = require('../src/data/ingredients');
@@ -42,7 +41,7 @@ it('should store the tags of the recipe', () => {
 })
 
 it('should determine the names of ingredients needed', () => {
-  expect(recipeCard.getIngredients(ingredientsData)).to.includes('salt')
+  expect(recipeCard.getIngredients(ingredientsData)).to.includes('0.50 tsp salt')
 })
 
 it('should determine the cost of the ingredients', () => {
@@ -50,7 +49,7 @@ it('should determine the cost of the ingredients', () => {
 })
 
 it('should return the instructions', () => {
-  expect(recipeCard.getInstructions()).to.equal(recipeData[0].instructions)
+  expect(recipeCard.getInstructions()[0]).to.equal(recipeCard.instructions[0].instruction)
 })
 
 })

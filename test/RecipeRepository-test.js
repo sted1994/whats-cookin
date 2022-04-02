@@ -18,13 +18,13 @@ describe('Recipe Repository', () => {
     })
 
     it('should find recipes by tag', () => {
-      recipeList.getRecipeByTag('snack')
-      expect(recipeList.recipesByTag).to.includes(recipeData[0])
+      recipeList.getRecipesBySearch('snack')
+      expect(recipeList.recipes).to.includes(recipeData[0])
     })
 
     it('should find recipes by name', () => {
-      recipeList.getRecipeByName("Cookie")
-      expect(recipeList.recipesByName).to.includes(recipeData[0])
+      recipeList.getRecipesBySearch("Cookie")
+      expect(recipeList.recipes).to.includes(recipeData[0])
     })
 
 })

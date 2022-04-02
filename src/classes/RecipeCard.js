@@ -14,7 +14,7 @@ getIngredients(ingredients) {
   const ingredientList = this.ingredients.reduce((arr, ingredient) => {
     const items = ingredients.forEach(item => {
       if(ingredient.id === item.id) {
-        arr.push(item.name)
+        arr.push(`${ingredient.quantity.amount.toFixed(2)} ${ingredient.quantity.unit} ${item.name}`)
       }
     })
     return arr
@@ -31,7 +31,7 @@ getCostOfIngredients(ingredients) {
     })
     return num
   }, 0)
-  return `$${ingredientList/100}`
+  return `$${(ingredientList/100).toFixed(2)}`
 };
 
 getInstructions() {
@@ -40,9 +40,9 @@ getInstructions() {
     arr.push(items)
     return arr
   }, [])
-  return instructionList
+  return instructionList;
 };
-  
+
 
 
 };
