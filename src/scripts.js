@@ -16,51 +16,109 @@ import './data/users';
 import { RecipeCard } from './classes/RecipeCard';
 import { RecipeRepository } from './classes/RecipeRepository';
 import { recipeData } from './data/recipes'
+import { usersData } from './data/users'
+
+let newRecipeRepository = new RecipeRepository(recipeData);
+let currentUser;
 
 const mainPage = document.querySelector('.main')
+const allRecipesTab = document.querySelector('.all-recipes')
 const recipeSelectionPage = document.querySelector('.recipe-selection')
-const allRecipes = document.querySelector(".all-recipes")
 const searchInput = document.getElementById("search-input")
 const magButton = document.querySelector(".mag-btn")
 const recipeCardPage = document.querySelector('.display-recipe')
 const recipeCardTitle = document.querySelector('.recipe-title')
+const myRecipes = document.querySelector('.my-recipes')
+const toCookBox = document.getElementById('recipes-to-cook')
+const favRecipes = document.getElementById('fav-recipes')
+const shoppingList = document.querySelector('.shopping-list-page')
+const homeTab = document.querySelector('.home')
+const myRecipesTab = document.querySelector('.saved-recipes')
+const shoppingTab = document.querySelector('.shopping-list')
 
 document.addEventListener('keypress', function(event) {
   if(event.key === "Enter"){
     const newRecipeRepository = new RecipeRepository(recipeData);
     newRecipeRepository.getRecipesBySearch(searchInput.value)
-    toggleView(mainPage)
-    toggleView(recipeSelectionPage)
+    hideElement(mainPage)
+    hideElement(myRecipes)
+    hideElement(recipeCardPage)
+    hideElement(shoppingList)
+    showElement(recipeSelectionPage)
     showRecipes(newRecipeRepository)
   }
 })
 
-  let newRecipeRepository = new RecipeRepository(recipeData);
-allRecipes.addEventListener('click', function(){
-  toggleView(mainPage)
-  toggleView(recipeSelectionPage)
+window.addEventListener('load', function() {
+  currentUser = getRandomUser(usersData);
+})
+
+homeTab.addEventListener('click', function() {
+  hideElement(recipeSelectionPage)
+  hideElement(myRecipes)
+  hideElement(recipeCardPage)
+  hideElement(shoppingList)
+  showElement(mainPage)
+})
+
+myRecipesTab.addEventListener('click', function() {
+  hideElement(recipeSelectionPage)
+  hideElement(mainPage)
+  hideElement(recipeCardPage)
+  hideElement(shoppingList)
+  showElement(myRecipes)
+})
+
+shoppingTab.addEventListener('click', function() {
+  hideElement(recipeSelectionPage)
+  hideElement(mainPage)
+  hideElement(recipeCardPage)
+  hideElement(myRecipes)
+  showElement(shoppingList)
+})
+
+allRecipesTab.addEventListener('click', function(){
+  hideElement(mainPage)
+  hideElement(myRecipes)
+  hideElement(recipeCardPage)
+  hideElement(shoppingList)
+  showElement(recipeSelectionPage)
   showRecipes(newRecipeRepository)
 })
 
 magButton.addEventListener('click', function() {
   newRecipeRepository.getRecipesBySearch(searchInput.value)
-  toggleView(mainPage)
-  toggleView(recipeSelectionPage)
+  hideElement(mainPage)
+  hideElement(myRecipes)
+  hideElement(recipeCardPage)
+  hideElement(shoppingList)
+  showElement(recipeSelectionPage)
   showRecipes(newRecipeRepository)
 })
 
-const toggleView = (element) => {
-  element.classList.toggle('hidden')
+const showElement = (element) => {
+  element.classList.remove('hidden')
+}
+
+const hideElement = (element) => {
+  element.classList.add('hidden')
 }
 
 const showRecipeCard = (event) => {
-  toggleView(recipeSelectionPage)
-  toggleView(recipeCardPage)
+  hideElement(recipeSelectionPage)
+  hideElement(mainPage)
+  hideElement(myRecipes)
+  hideElement(shoppingList)
+  showElement(recipeCardPage)
   const currentRecipe = newRecipeRepository.recipes.filter(recipe => recipe.name === event)
   formatRecipeCard(currentRecipe)
 }
 
 window.showRecipeCard = showRecipeCard;
+
+function getRandomUser(user) {
+  return user[Math.floor(Math.random() * user.length)];
+}
 
 const showRecipes = (recipeInfo) => {
 
@@ -84,18 +142,18 @@ const showRecipes = (recipeInfo) => {
 }
 
 const makeList = (recipe, method) => {
-  const newRecipeCard = new RecipeCard(recipe);
+  const newRecipeCard = new RecipeCard(recipe);;
   if(method === 'ingredient'){
-  var list = newRecipeCard.getIngredients(ingredientsData)
-  var displayList = list.reduce((string, ingredient) => {
-      string += `<li class="recipe-select-ingredient">${ingredient}</li>`
-      return string;
+    var list = newRecipeCard.getIngredients(ingredientsData)
+    var displayList = list.reduce((string, ingredient) => {
+    string += `<li class="recipe-select-ingredient">${ingredient}</li>`
+    return string;
     }, " ");
-} else if(method === 'instructions'){
-  var list = newRecipeCard.getInstructions(ingredientsData)
-  var displayList = list.reduce((string, instruction) => {
-      string += `<li class="instruction">${instruction}</li>`
-      return string;
+    } else if(method === 'instructions'){
+    var list = newRecipeCard.getInstructions(ingredientsData)
+    var displayList = list.reduce((string, instruction) => {
+    string += `<li class="instruction">${instruction}</li>`
+    return string;
     }, " ");
 }
 
@@ -107,7 +165,6 @@ const formatRecipeCard = (currentRecipe) => {
   const ingredientList = makeList(currentRecipe[0], 'ingredient')
   const instructionList = makeList(currentRecipe[0], 'instructions')
   const price = newRecipe.getCostOfIngredients(ingredientsData)
-  console.log(price)
   let renderer = "";
   const card =
   `<h1 class="recipe-title">${currentRecipe[0].name}</h1>
@@ -130,10 +187,6 @@ const formatRecipeCard = (currentRecipe) => {
         ${instructionList}
       </ol>
     </article>
-  </section>
-  <section>
-    <button class="recipes-to-cook-btn">Add To Saved Recipes</button>
-    <button class="recipes-to-fav-btn">Add To Favorites</button>
   </section>`
   renderer = card;
   recipeCardPage.innerHTML = renderer;
