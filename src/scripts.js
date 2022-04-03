@@ -15,13 +15,7 @@ import './data/users';
 import { RecipeCard } from './classes/RecipeCard';
 import { RecipeRepository } from './classes/RecipeRepository';
 import { User } from './classes/User'
-import { recipeData } from './data/recipes'
-//import { usersData } from './data/users'
 import { data } from './apiCalls'
-
-
-
-
 
 let newRecipeRepository;
 let currentUser;
@@ -74,14 +68,6 @@ document.addEventListener('keypress', function(event) {
 
   }
 })
-
-// window.addEventListener('load', function() {
-//   // let randomUser = getRandomUser(usersData);
-//   setTimeout(getRandomUser(usersData), 3000)
-//
-// })
-
-
 
 homeTab.addEventListener('click', function() {
   hideElement(recipeSelectionPage)
@@ -138,7 +124,7 @@ const hideElement = (element) => {
 
 function getRandomUser(data) {
   let user = usersData[Math.floor(Math.random() * usersData.length)];
-  console.log(user)
+  currentUser = new User(user)
 }
 
 const showRecipeCard = (event) => {
