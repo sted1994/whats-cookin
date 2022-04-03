@@ -1,7 +1,6 @@
 export class RecipeRepository {
   constructor(recipes) {
     this.recipes = recipes;
-    this.filteredRecipes;
   }
 
 getRecipeByTag(tagName) {
