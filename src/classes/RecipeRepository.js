@@ -1,6 +1,7 @@
 export class RecipeRepository {
   constructor(recipes) {
     this.recipes = recipes;
+    this.filteredRecipes;
   }
 
 getRecipeByTag(tagName) {
@@ -36,6 +37,11 @@ getRecipesBySearch(input) {
   })
   this.recipes = recipesByName
 }
+
+  getAllRecipes(recipes) {
+    this.recipes = recipes;
+  }
+
 }
 
 

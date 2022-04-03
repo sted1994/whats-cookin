@@ -24,6 +24,7 @@ let currentRecipe;
 let ingredients;
 let usersData;
 let randomUser
+let recipeDataClasses
 
 const promise = Promise.all([data.recipes, data.ingredients, data.users]).then(results => {
    ingredients = results[1].ingredientsData;
@@ -97,6 +98,7 @@ shoppingTab.addEventListener('click', function() {
 })
 
 allRecipesTab.addEventListener('click', function(){
+  newRecipeRepository.getAllRecipes(recipeDataClasses)
   hideElement(mainPage)
   hideElement(myRecipes)
   hideElement(recipeCardPage)
