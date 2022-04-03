@@ -17,6 +17,7 @@ import { RecipeRepository } from './classes/RecipeRepository';
 import { User } from './classes/User'
 import { data } from './apiCalls'
 
+
 let newRecipeRepository;
 let currentUser;
 let currentRecipe;
@@ -25,9 +26,12 @@ let usersData;
 let randomUser
 
 const promise = Promise.all([data.recipes, data.ingredients, data.users]).then(results => {
-   newRecipeRepository = new RecipeRepository(results[0].recipeData);
    ingredients = results[1].ingredientsData;
    usersData = results[2].usersData
+   recipeDataClasses = results[0].recipeData.map((recipe) => {
+   return new RecipeCard(recipe);
+   })
+   newRecipeRepository = new RecipeRepository(recipeDataClasses);
 }).then(randomUser => getRandomUser())
 
 const mainPage = document.querySelector('.main')
@@ -52,7 +56,6 @@ const favSearch = document.getElementById("recipe-search-input")
 
 document.addEventListener('keypress', function(event) {
   if(event.key === "Enter" && searchInput.value){
-    const newRecipeRepository = new RecipeRepository(recipeData);
     newRecipeRepository.getRecipesBySearch(searchInput.value)
     hideElement(mainPage)
     hideElement(myRecipes)
@@ -135,7 +138,7 @@ const showRecipeCard = (event) => {
   showElement(recipeCardPage)
   newRecipeRepository.recipes.forEach(recipe => {
     if(recipe.name === event) {
-      currentRecipe = new RecipeCard(recipe)
+      currentRecipe = recipe
     }
   })
   formatRecipeCard(currentRecipe)
