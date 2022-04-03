@@ -26,16 +26,14 @@ getRecipesBySearch(input) {
     let upperCaseInput = input[0].toUpperCase() + input.slice(1)
     return recipe.name.includes(upperCaseInput)
   })
-    const recipes = recipesByTag.map((recipe) => {
-    recipesByName.map((recipe2) => {
-      if(recipe.id === recipe2.id) {
-        return
-      } else {
-          recipesByName.concat(recipe2)
-      }
+    recipesByTag.map((recipe) => {
+      recipesByName.map((recipe2) => {
+        if(recipe.id === recipe2.id) {
+          recipesByName.splice([recipe], 1)
+        }
+      })
     })
-  })
-  this.recipes = recipesByName
+  this.recipes = recipesByName.concat(recipesByTag)
 }
 
   getAllRecipes(recipes) {

@@ -33,7 +33,7 @@ export class User {
 
     const recipesByName = this.favRecipes.forEach((recipe) => {
     let upperCaseInput = input[0].toUpperCase() + input.slice(1)
-      if(recipe.name.includes(input)) {
+      if(recipe.name.includes(upperCaseInput)) {
         this.filteredFavs.push(recipe)
       }
     })

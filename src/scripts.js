@@ -10,8 +10,6 @@ import './images/right-arrow.png';
 import './images/thyme.png';
 import './images/vegitarian.png';
 import './images/delete.png'
-import './data/recipes';
-import './data/users';
 import { RecipeCard } from './classes/RecipeCard';
 import { RecipeRepository } from './classes/RecipeRepository';
 import { User } from './classes/User'
@@ -115,6 +113,8 @@ magButton.addEventListener('click', function() {
   hideElement(shoppingList)
   showElement(recipeSelectionPage)
   showRecipes(newRecipeRepository)
+  newRecipeRepository.getAllRecipes(recipeDataClasses)
+  searchInput.value = ""
 })
 
 
@@ -153,7 +153,7 @@ const saveRecipe = (event) => {
   } else if(event === 'Add To Favorites') {
     currentUser.addToFavRecipes(currentRecipe)
   }
-  renderRecipesToCook()
+  renderRecipesToCook(currentUser.recipesToCook)
   renderFavRecipes(currentUser.favRecipes)
 }
 window.saveRecipe = saveRecipe;
@@ -167,17 +167,26 @@ const deleteFavorite = (event) => {
 }
 window.deleteFavorite = deleteFavorite;
 
+const deleteToCook = (event) => {
+  const newToCook = currentUser.recipesToCook.filter((recipe) => {
+    return recipe.name !== event.target.parentElement.innerText
+  })
+  currentUser.recipesToCook = newToCook;
+  renderRecipesToCook(currentUser.recipesToCook)
+}
+window.deleteToCook = deleteToCook;
 
-const makeList = (recipe, method) => {
-  const newRecipeCard = new RecipeCard(recipe);
+
+
+const makeList = (recipe, method) => {;
   if(method === 'ingredient'){
-    var list = newRecipeCard.getIngredients(ingredients)
+    var list = recipe.getIngredients(ingredients)
     var displayList = list.reduce((string, ingredient) => {
     string += `<li class="recipe-select-ingredient">${ingredient}</li>`
     return string;
     }, " ");
     } else if(method === 'instructions'){
-    var list = newRecipeCard.getInstructions(ingredients)
+    var list = recipe.getInstructions(ingredients)
     var displayList = list.reduce((string, instruction) => {
     string += `<li class="instruction">${instruction}</li>`
     return string;
@@ -242,17 +251,16 @@ const formatRecipeCard = () => {
   recipeCardPage.innerHTML = renderer;
 }
 
- const renderRecipesToCook = () => {
+ const renderRecipesToCook = (recipes) => {
    toCook.innerHTML = '';
-   currentUser.recipesToCook.map((recipe) => {
-   toCook.innerHTML += `<li class="list-item">${recipe.name}</li>`;
+   recipes.map((recipe) => {
+   toCook.innerHTML += `<li class="list-item">${recipe.name}<img onclick='deleteToCook(event)' class="trashcan" src='images/delete.png'/></li>`;
    })
  }
 
  const renderFavRecipes = (recipes) => {
    favorites.innerHTML = '';
    recipes.map((recipe) => {
-   favorites.innerHTML +=
-   `<li class="list-item">${recipe.name}<img onclick='deleteFavorite(event)' class="trashcan" src='images/delete.png'/></li>`
+   favorites.innerHTML += `<li class="list-item">${recipe.name}<img onclick='deleteFavorite(event)' class="trashcan" src='images/delete.png'/></li>`
  })
 }
