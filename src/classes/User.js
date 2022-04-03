@@ -25,12 +25,10 @@ export class User {
   if(this.favRecipes.length === 0) {
     this.favRecipes.push(favRecipe)
   } else {
-  this.favRecipes.forEach((recipe) => {
-    if(this.favRecipes.includes(favRecipe)) {
-    } else {
-    this.favRecipes.push(favRecipe)
-  }
-  })
+    const noDup = this.favRecipes.filter(recipe => {
+      return recipe.id !== favRecipe.id
+    })
+    this.favRecipes = noDup
 }
   };
 

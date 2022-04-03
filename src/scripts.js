@@ -10,18 +10,31 @@ import './images/right-arrow.png';
 import './images/thyme.png';
 import './images/vegitarian.png';
 import './images/delete.png'
-import { ingredientsData } from './data/ingredients';
 import './data/recipes';
 import './data/users';
 import { RecipeCard } from './classes/RecipeCard';
 import { RecipeRepository } from './classes/RecipeRepository';
 import { User } from './classes/User'
 import { recipeData } from './data/recipes'
-import { usersData } from './data/users'
+//import { usersData } from './data/users'
+import { data } from './apiCalls'
 
-let newRecipeRepository = new RecipeRepository(recipeData);
+
+
+
+
+let newRecipeRepository;
 let currentUser;
 let currentRecipe;
+let ingredients;
+let usersData;
+let randomUser
+
+const promise = Promise.all([data.recipes, data.ingredients, data.users]).then(results => {
+   newRecipeRepository = new RecipeRepository(results[0].recipeData);
+   ingredients = results[1].ingredientsData;
+   usersData = results[2].usersData
+}).then(randomUser => getRandomUser())
 
 const mainPage = document.querySelector('.main')
 const allRecipesTab = document.querySelector('.all-recipes')
@@ -62,10 +75,13 @@ document.addEventListener('keypress', function(event) {
   }
 })
 
-window.addEventListener('load', function() {
-  let randomUser = getRandomUser(usersData);
-  currentUser = new User(randomUser)
-})
+// window.addEventListener('load', function() {
+//   // let randomUser = getRandomUser(usersData);
+//   setTimeout(getRandomUser(usersData), 3000)
+//
+// })
+
+
 
 homeTab.addEventListener('click', function() {
   hideElement(recipeSelectionPage)
@@ -120,8 +136,9 @@ const hideElement = (element) => {
   element.classList.add('hidden')
 }
 
-function getRandomUser(user) {
-  return user[Math.floor(Math.random() * user.length)];
+function getRandomUser(data) {
+  let user = usersData[Math.floor(Math.random() * usersData.length)];
+  console.log(user)
 }
 
 const showRecipeCard = (event) => {
@@ -163,13 +180,13 @@ window.deleteFavorite = deleteFavorite;
 const makeList = (recipe, method) => {
   const newRecipeCard = new RecipeCard(recipe);
   if(method === 'ingredient'){
-    var list = newRecipeCard.getIngredients(ingredientsData)
+    var list = newRecipeCard.getIngredients(ingredients)
     var displayList = list.reduce((string, ingredient) => {
     string += `<li class="recipe-select-ingredient">${ingredient}</li>`
     return string;
     }, " ");
     } else if(method === 'instructions'){
-    var list = newRecipeCard.getInstructions(ingredientsData)
+    var list = newRecipeCard.getInstructions(ingredients)
     var displayList = list.reduce((string, instruction) => {
     string += `<li class="instruction">${instruction}</li>`
     return string;
@@ -200,7 +217,7 @@ const showRecipes = (recipeInfo) => {
 const formatRecipeCard = () => {
   const ingredientList = makeList(currentRecipe, 'ingredient')
   const instructionList = makeList(currentRecipe, 'instructions')
-  const price = currentRecipe.getCostOfIngredients(ingredientsData)
+  const price = currentRecipe.getCostOfIngredients(ingredients)
   let renderer = "";
   const card =
   `<h1 class="recipe-title">${currentRecipe.name}</h1>
