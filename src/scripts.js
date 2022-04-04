@@ -63,6 +63,7 @@ document.addEventListener('keypress', function(event) {
     hideElement(shoppingList)
     showElement(recipeSelectionPage)
     showRecipes(newRecipeRepository)
+    newRecipeRepository.getAllRecipes(recipeDataClasses)
     searchInput.value = ""
   } else if(event.key === "Enter") {
   // currentUser.searchFavs(favSearch.value)
@@ -209,12 +210,13 @@ const showRecipes = (recipeInfo) => {
     `<section class="recipe-select-box">
        <h1 class="recipe-select-name">${recipe.name}</h1>
        <div class="recipe-content-box">
-         <img class="recipe-pic" src="${recipe.image}" alt="Spaghetti">
+         <img class="recipe-pic" src="${recipe.image}" alt="Recipe image">
          <ul class="recipe-select-ingredients">
           ${ingredientList}
          </ul>
        </div>
        <button onclick="showRecipeCard(event.target.classList.value)" id="view-recipe-btn" class="${recipe.name}">View Recipe</button>
+
      </section>`
     recipeSelectionPage.innerHTML = renderer;
   });
@@ -229,7 +231,7 @@ const formatRecipeCard = () => {
   `<h1 class="recipe-title">${currentRecipe.name}</h1>
   <section class="recipe-card">
     <header>
-      <p class="ingredient">Ingredients:</p>
+      <p class="card-section-title">Ingredients:</p>
     </header>
     <article class="ingredients-section">
       <ul class="recipe-card-ingredients">
@@ -240,18 +242,18 @@ const formatRecipeCard = () => {
       <p class="recipe-cost">Ingredient Cost: ${price}</p>
       <button class="add-ingredients-btn">Add To Shopping List!</button>
     </section>
-    <p class="instructions-title">Instuctions:</p>
+    <p class="card-section-title">Instructions:</p>
     <article class="instructions">
       <ol class="instructions-list">
         ${instructionList}
       </ol>
     </article>
     </section>
-    <section>
+    <section class="save-buttons">
       <button onclick="saveRecipe(event.target.innerText)"
-      class="recipes-to-cook-btn">Add To Saved Recipes</button>
+      class="recipes-to-save-btn">Add To Saved Recipes</button>
       <button onclick="saveRecipe(event.target.innerText)"
-      class="recipes-to-fav-btn">Add To Favorites</button>
+      class="recipes-to-save-btn">Add To Favorites</button>
     </section>`
   renderer = card;
   recipeCardPage.innerHTML = renderer;
@@ -260,13 +262,21 @@ const formatRecipeCard = () => {
  const renderRecipesToCook = (recipes) => {
    toCook.innerHTML = '';
    recipes.map((recipe) => {
-   toCook.innerHTML += `<p class="list-item">${recipe.name}<img onclick='deleteToCook(event)' class="trashcan" src='images/delete.png'/></p>`;
+   toCook.innerHTML +=
+   `<section class="saved-recipe-box">
+      <p onclick="showRecipeCard(event.target.innerText)" class="list-item">${recipe.name}</p>
+      <img onclick='deleteToCook(event)' class="trashcan" src='images/delete.png'/>
+    </section>`
    })
  }
 
  const renderFavRecipes = (recipes) => {
    favorites.innerHTML = '';
    recipes.map((recipe) => {
-   favorites.innerHTML += `<p class="list-item">${recipe.name}<img onclick='deleteFavorite(event)' class="trashcan" src='images/delete.png'/></p>`
+   favorites.innerHTML +=
+   `<section class="saved-recipe-box">
+      <p onclick="showRecipeCard(event.target.innerText)" class="list-item">${recipe.name}</p>
+      <img onclick='deleteFavorite(event)' class="trashcan" src='images/delete.png'/>
+    </section>`
  })
 }
