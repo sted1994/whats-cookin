@@ -62,6 +62,7 @@ document.addEventListener('keypress', function(event) {
     hideElement(shoppingList)
     showElement(recipeSelectionPage)
     showRecipes(newRecipeRepository)
+    newRecipeRepository.getAllRecipes(recipeDataClasses)
     searchInput.value = ""
   } else if(event.key === "Enter") {
   // currentUser.searchFavs(favSearch.value)
@@ -255,13 +256,13 @@ const formatRecipeCard = () => {
  const renderRecipesToCook = (recipes) => {
    toCook.innerHTML = '';
    recipes.map((recipe) => {
-   toCook.innerHTML += `<p class="list-item">${recipe.name}<img onclick='deleteToCook(event)' class="trashcan" src='images/delete.png'/></p>`;
+   toCook.innerHTML += `<p onclick="showRecipeCard(event.target.innerText)" class="list-item">${recipe.name}<img onclick='deleteToCook(event)' class="trashcan" src='images/delete.png'/></p>`;
    })
  }
 
  const renderFavRecipes = (recipes) => {
    favorites.innerHTML = '';
    recipes.map((recipe) => {
-   favorites.innerHTML += `<p class="list-item">${recipe.name}<img onclick='deleteFavorite(event)' class="trashcan" src='images/delete.png'/></p>`
+   favorites.innerHTML += `<p onclick="showRecipeCard(event.target.innerText)" class="list-item">${recipe.name}<img onclick='deleteFavorite(event)' class="trashcan" src='images/delete.png'/></p>`
  })
 }
