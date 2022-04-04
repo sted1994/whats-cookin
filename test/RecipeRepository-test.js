@@ -28,8 +28,8 @@ describe('Recipe Repository', () => {
       "tags": [
         "antipasti",
       ]
-    }]
-      recipeList = new RecipeRepository(recipeData)
+    }];
+      recipeList = new RecipeRepository(recipeData);
     });
 
     it('Should be a function', () => {
@@ -37,17 +37,16 @@ describe('Recipe Repository', () => {
     });
 
     it('should store all recipes', () => {
-      expect(recipeList.recipes).to.equal(recipeData)
-    })
+      expect(recipeList.recipes).to.equal(recipeData);
+    });
 
     it('should find recipes by tag', () => {
-      recipeList.getRecipeByTag('antipasti')
-      expect(recipeList.recipes).to.includes(recipeData[0])
-    })
+      recipeList.getRecipeByTag('antipasti');
+      expect(recipeList.recipes).to.includes(recipeData[0]);
+    });
 
     it('should find recipes by name', () => {
-      recipeList.getRecipesBySearch("Cookie")
-      expect(recipeList.recipes).to.includes(recipeData[0])
-    })
-
-})
+      recipeList.getRecipesBySearch("Cookie");
+      expect(recipeList.recipes).to.includes(recipeData[0]);
+    });
+});
