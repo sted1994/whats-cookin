@@ -65,7 +65,7 @@ document.addEventListener('keypress', function(event) {
     searchInput.value = ""
   } else if(event.key === "Enter") {
   // currentUser.searchFavs(favSearch.value)
-     
+
     renderFavRecipes(currentUser.searchFavs(favSearch.value))
     favSearch.value = ""
 
@@ -255,13 +255,13 @@ const formatRecipeCard = () => {
  const renderRecipesToCook = (recipes) => {
    toCook.innerHTML = '';
    recipes.map((recipe) => {
-   toCook.innerHTML += `<li class="list-item">${recipe.name}<img onclick='deleteToCook(event)' class="trashcan" src='images/delete.png'/></li>`;
+   toCook.innerHTML += `<p class="list-item">${recipe.name}<img onclick='deleteToCook(event)' class="trashcan" src='images/delete.png'/></p>`;
    })
  }
 
  const renderFavRecipes = (recipes) => {
    favorites.innerHTML = '';
    recipes.map((recipe) => {
-   favorites.innerHTML += `<li class="list-item">${recipe.name}<img onclick='deleteFavorite(event)' class="trashcan" src='images/delete.png'/></li>`
+   favorites.innerHTML += `<p class="list-item">${recipe.name}<img onclick='deleteFavorite(event)' class="trashcan" src='images/delete.png'/></p>`
  })
 }
