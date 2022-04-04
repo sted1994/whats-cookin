@@ -50,6 +50,7 @@ const shoppingTab = document.querySelector('.shopping-list')
 const toCook = document.querySelector('.recipes-to-cook-list')
 const favorites = document.querySelector('.favorite-recipes-list')
 const favSearch = document.getElementById("recipe-search-input")
+const clearFilterBtn = document.querySelector('.clear-filter-Btn')
 
 
 
@@ -118,6 +119,9 @@ magButton.addEventListener('click', function() {
   searchInput.value = ""
 })
 
+clearFilterBtn.addEventListener('click', function(){
+  renderFavRecipes(currentUser.favRecipes)
+})
 
 
 const showElement = (element) => {
@@ -134,6 +138,7 @@ function getRandomUser(data) {
 }
 
 const showRecipeCard = (event) => {
+
   hideElement(recipeSelectionPage)
   hideElement(mainPage)
   hideElement(myRecipes)
@@ -209,7 +214,7 @@ const showRecipes = (recipeInfo) => {
           ${ingredientList}
          </ul>
        </div>
-       <button onclick="showRecipeCard(event.target.classList.value)" class="${recipe.name}">test</button>
+       <button onclick="showRecipeCard(event.target.classList.value)" id="view-recipe-btn" class="${recipe.name}">View Recipe</button>
      </section>`
     recipeSelectionPage.innerHTML = renderer;
   });
