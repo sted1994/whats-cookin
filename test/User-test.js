@@ -1,8 +1,6 @@
 import { expect } from 'chai';
 import RecipeCard from '../src/classes/RecipeCard';
-//const { recipeData } = require('../src/data/recipes');
 import User from '../src/classes/User';
-//const { userData } = require('../src/data/users');
 
 describe("User", () => {
 
@@ -54,10 +52,10 @@ describe("User", () => {
             "tags": [
               "lunch",
             ]
-    }]
+    }];
 
       user = new User;
-      recipe = new RecipeCard(recipeData)
+      recipe = new RecipeCard(recipeData);
     });
 
   it("should be a function", () => {
@@ -65,27 +63,26 @@ describe("User", () => {
   });
 
   it("should be able to store multiple recipes to cook", () => {
-    user.addToCookRecipes(recipe)
-    let recipe2 = new RecipeCard(recipeData[1])
-    user.addToCookRecipes(recipe2)
-    expect(user.recipesToCook).to.include(recipe)
-    expect(user.recipesToCook).to.include(recipe2)
+    user.addToCookRecipes(recipe);
+    let recipe2 = new RecipeCard(recipeData[1]);
+    user.addToCookRecipes(recipe2);
+    expect(user.recipesToCook).to.include(recipe);
+    expect(user.recipesToCook).to.include(recipe2);
   });
 
   it("should be able to store multiple recipes to favorites", () => {
-    user.addToFavRecipes(recipe)
-    let recipe2 = new RecipeCard(recipeData[1])
-    user.addToFavRecipes(recipe2)
-    expect(user.favRecipes).to.include(recipe)
-    expect(user.favRecipes).to.include(recipe2)
+    user.addToFavRecipes(recipe);
+    let recipe2 = new RecipeCard(recipeData[1]);
+    user.addToFavRecipes(recipe2);
+    expect(user.favRecipes).to.include(recipe);
+    expect(user.favRecipes).to.include(recipe2);
   });
 
   it("should be able to remove favorite recipes", () => {
     user.addToFavRecipes(recipe);
-    let recipe2 = new RecipeCard(recipeData[1])
-    user.addToFavRecipes(recipe2)
-    user.removeFav(recipe2)
-    expect(user.favRecipes[0]).to.equal(recipe)
+    let recipe2 = new RecipeCard(recipeData[1]);
+    user.addToFavRecipes(recipe2);
+    user.removeFav(recipe2);
+    expect(user.favRecipes[0]).to.equal(recipe);
   });
-
 });
