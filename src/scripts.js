@@ -64,8 +64,9 @@ document.addEventListener('keypress', function(event) {
     showRecipes(newRecipeRepository)
     searchInput.value = ""
   } else if(event.key === "Enter") {
-    currentUser.searchFavs(favSearch.value)
-    renderFavRecipes(currentUser.filteredFavs)
+  // currentUser.searchFavs(favSearch.value)
+     
+    renderFavRecipes(currentUser.searchFavs(favSearch.value))
     favSearch.value = ""
 
   }

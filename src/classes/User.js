@@ -25,18 +25,27 @@ export class User {
   };
 
   searchFavs(input) {
-    const recipesByTag = this.favRecipes.forEach((recipe) => {
-      if(recipe.tags.includes(input)) {
-        this.filteredFavs.push(recipe)
-      }
-    })
+    const upperCaseInput = input[0].toUpperCase() + input.slice(1)
+    const recipesByTag = this.favRecipes.reduce((arr, recipe) => {
+       if(recipe.tags.includes(input)){
+         arr.push(recipe)
+       }
+       return arr
+    }, [])
+    const recipesByName = this.favRecipes.reduce((arr, recipe) => {
+       if(recipe.name.includes(upperCaseInput)){
+         arr.push(recipe)
+       }
+       return arr
+    }, [])
 
-    const recipesByName = this.favRecipes.forEach((recipe) => {
-    let upperCaseInput = input[0].toUpperCase() + input.slice(1)
-      if(recipe.name.includes(upperCaseInput)) {
-        this.filteredFavs.push(recipe)
-      }
-    })
+     const result = recipesByName.concat(recipesByTag).reduce((arr, recipe) => {
+       if(!arr.includes(recipe)){
+         arr.push(recipe)
+       }
+       return arr
+     },[])
+  return result
   }
 
 };
