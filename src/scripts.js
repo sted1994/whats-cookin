@@ -10,8 +10,6 @@ import './images/right-arrow.png';
 import './images/thyme.png';
 import './images/vegitarian.png';
 import './images/delete.png'
-import './data/recipes';
-import './data/users';
 import { RecipeCard } from './classes/RecipeCard';
 import { RecipeRepository } from './classes/RecipeRepository';
 import { User } from './classes/User'
@@ -52,6 +50,7 @@ const shoppingTab = document.querySelector('.shopping-list')
 const toCook = document.querySelector('.recipes-to-cook-list')
 const favorites = document.querySelector('.favorite-recipes-list')
 const favSearch = document.getElementById("recipe-search-input")
+const clearFilterBtn = document.querySelector('.clear-filter-Btn')
 
 
 
@@ -64,10 +63,12 @@ document.addEventListener('keypress', function(event) {
     hideElement(shoppingList)
     showElement(recipeSelectionPage)
     showRecipes(newRecipeRepository)
+    newRecipeRepository.getAllRecipes(recipeDataClasses)
     searchInput.value = ""
   } else if(event.key === "Enter") {
-    currentUser.searchFavs(favSearch.value)
-    renderFavRecipes(currentUser.filteredFavs)
+  // currentUser.searchFavs(favSearch.value)
+
+    renderFavRecipes(currentUser.searchFavs(favSearch.value))
     favSearch.value = ""
 
   }
@@ -115,8 +116,13 @@ magButton.addEventListener('click', function() {
   hideElement(shoppingList)
   showElement(recipeSelectionPage)
   showRecipes(newRecipeRepository)
+  newRecipeRepository.getAllRecipes(recipeDataClasses)
+  searchInput.value = ""
 })
 
+clearFilterBtn.addEventListener('click', function(){
+  renderFavRecipes(currentUser.favRecipes)
+})
 
 
 const showElement = (element) => {
@@ -133,6 +139,7 @@ function getRandomUser(data) {
 }
 
 const showRecipeCard = (event) => {
+
   hideElement(recipeSelectionPage)
   hideElement(mainPage)
   hideElement(myRecipes)
@@ -153,7 +160,7 @@ const saveRecipe = (event) => {
   } else if(event === 'Add To Favorites') {
     currentUser.addToFavRecipes(currentRecipe)
   }
-  renderRecipesToCook()
+  renderRecipesToCook(currentUser.recipesToCook)
   renderFavRecipes(currentUser.favRecipes)
 }
 window.saveRecipe = saveRecipe;
@@ -167,17 +174,26 @@ const deleteFavorite = (event) => {
 }
 window.deleteFavorite = deleteFavorite;
 
+const deleteToCook = (event) => {
+  const newToCook = currentUser.recipesToCook.filter((recipe) => {
+    return recipe.name !== event.target.parentElement.innerText
+  })
+  currentUser.recipesToCook = newToCook;
+  renderRecipesToCook(currentUser.recipesToCook)
+}
+window.deleteToCook = deleteToCook;
 
-const makeList = (recipe, method) => {
-  const newRecipeCard = new RecipeCard(recipe);
+
+
+const makeList = (recipe, method) => {;
   if(method === 'ingredient'){
-    var list = newRecipeCard.getIngredients(ingredients)
+    var list = recipe.getIngredients(ingredients)
     var displayList = list.reduce((string, ingredient) => {
     string += `<li class="recipe-select-ingredient">${ingredient}</li>`
     return string;
     }, " ");
     } else if(method === 'instructions'){
-    var list = newRecipeCard.getInstructions(ingredients)
+    var list = recipe.getInstructions(ingredients)
     var displayList = list.reduce((string, instruction) => {
     string += `<li class="instruction">${instruction}</li>`
     return string;
@@ -194,12 +210,13 @@ const showRecipes = (recipeInfo) => {
     `<section class="recipe-select-box">
        <h1 class="recipe-select-name">${recipe.name}</h1>
        <div class="recipe-content-box">
-         <img class="recipe-pic" src="${recipe.image}" alt="Spaghetti">
+         <img class="recipe-pic" src="${recipe.image}" alt="Recipe image">
          <ul class="recipe-select-ingredients">
           ${ingredientList}
          </ul>
        </div>
-       <button onclick="showRecipeCard(event.target.classList.value)" class="${recipe.name}">test</button>
+       <button onclick="showRecipeCard(event.target.classList.value)" id="view-recipe-btn" class="${recipe.name}">View Recipe</button>
+
      </section>`
     recipeSelectionPage.innerHTML = renderer;
   });
@@ -214,7 +231,7 @@ const formatRecipeCard = () => {
   `<h1 class="recipe-title">${currentRecipe.name}</h1>
   <section class="recipe-card">
     <header>
-      <p class="ingredient">Ingredients:</p>
+      <p class="card-section-title">Ingredients:</p>
     </header>
     <article class="ingredients-section">
       <ul class="recipe-card-ingredients">
@@ -225,27 +242,31 @@ const formatRecipeCard = () => {
       <p class="recipe-cost">Ingredient Cost: ${price}</p>
       <button class="add-ingredients-btn">Add To Shopping List!</button>
     </section>
-    <p class="instructions-title">Instuctions:</p>
+    <p class="card-section-title">Instructions:</p>
     <article class="instructions">
       <ol class="instructions-list">
         ${instructionList}
       </ol>
     </article>
     </section>
-    <section>
+    <section class="save-buttons">
       <button onclick="saveRecipe(event.target.innerText)"
-      class="recipes-to-cook-btn">Add To Saved Recipes</button>
+      class="recipes-to-save-btn">Add To Saved Recipes</button>
       <button onclick="saveRecipe(event.target.innerText)"
-      class="recipes-to-fav-btn">Add To Favorites</button>
+      class="recipes-to-save-btn">Add To Favorites</button>
     </section>`
   renderer = card;
   recipeCardPage.innerHTML = renderer;
 }
 
- const renderRecipesToCook = () => {
+ const renderRecipesToCook = (recipes) => {
    toCook.innerHTML = '';
-   currentUser.recipesToCook.map((recipe) => {
-   toCook.innerHTML += `<li class="list-item">${recipe.name}</li>`;
+   recipes.map((recipe) => {
+   toCook.innerHTML +=
+   `<section class="saved-recipe-box">
+      <p onclick="showRecipeCard(event.target.innerText)" class="list-item">${recipe.name}</p>
+      <img onclick='deleteToCook(event)' class="trashcan" src='images/delete.png'/>
+    </section>`
    })
  }
 
@@ -253,6 +274,9 @@ const formatRecipeCard = () => {
    favorites.innerHTML = '';
    recipes.map((recipe) => {
    favorites.innerHTML +=
-   `<li class="list-item">${recipe.name}<img onclick='deleteFavorite(event)' class="trashcan" src='images/delete.png'/></li>`
+   `<section class="saved-recipe-box">
+      <p onclick="showRecipeCard(event.target.innerText)" class="list-item">${recipe.name}</p>
+      <img onclick='deleteFavorite(event)' class="trashcan" src='images/delete.png'/>
+    </section>`
  })
 }
