@@ -101,6 +101,10 @@ h1 {
   cursor: pointer;
 }
 
+.favorite-recipes-list,
+.recipes-to-cook-list{
+  overflow-y: scroll;
+}
 
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~Carousel~~~~~~~~~~~~~~~~~~~*/
 .search-bar{
