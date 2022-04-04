@@ -15,13 +15,11 @@ import { RecipeRepository } from './classes/RecipeRepository';
 import { User } from './classes/User'
 import { data } from './apiCalls'
 
-
 let newRecipeRepository;
 let currentUser;
 let currentRecipe;
 let ingredients;
 let usersData;
-let randomUser
 let recipeDataClasses
 
 const promise = Promise.all([data.recipes, data.ingredients, data.users]).then(results => {
@@ -52,85 +50,54 @@ const favorites = document.querySelector('.favorite-recipes-list')
 const favSearch = document.getElementById("recipe-search-input")
 const clearFilterBtn = document.querySelector('.clear-filter-Btn')
 
-
-
 document.addEventListener('keypress', function(event) {
   if(event.key === "Enter" && searchInput.value){
     newRecipeRepository.getRecipesBySearch(searchInput.value)
-    hideElement(mainPage)
-    hideElement(myRecipes)
-    hideElement(recipeCardPage)
-    hideElement(shoppingList)
-    showElement(recipeSelectionPage)
+    displayElement([mainPage, myRecipes, recipeCardPage, shoppingList, recipeSelectionPage], recipeSelectionPage)
     showRecipes(newRecipeRepository)
     newRecipeRepository.getAllRecipes(recipeDataClasses)
     searchInput.value = ""
   } else if(event.key === "Enter") {
-  // currentUser.searchFavs(favSearch.value)
-
-    renderFavRecipes(currentUser.searchFavs(favSearch.value))
+    renderRecipes(currentUser.searchFavs(favSearch.value), favorites, "favRecipes")
     favSearch.value = ""
-
   }
 })
 
 homeTab.addEventListener('click', function() {
-  hideElement(recipeSelectionPage)
-  hideElement(myRecipes)
-  hideElement(recipeCardPage)
-  hideElement(shoppingList)
-  showElement(mainPage)
+  displayElement([mainPage, myRecipes, recipeCardPage, shoppingList, recipeSelectionPage], mainPage)
 })
 
 myRecipesTab.addEventListener('click', function() {
-  hideElement(recipeSelectionPage)
-  hideElement(mainPage)
-  hideElement(recipeCardPage)
-  hideElement(shoppingList)
-  showElement(myRecipes)
+  displayElement([mainPage, myRecipes, recipeCardPage, shoppingList, recipeSelectionPage], myRecipes)
 })
 
 shoppingTab.addEventListener('click', function() {
-  hideElement(recipeSelectionPage)
-  hideElement(mainPage)
-  hideElement(recipeCardPage)
-  hideElement(myRecipes)
-  showElement(shoppingList)
+  displayElement([mainPage, myRecipes, recipeCardPage, shoppingList, recipeSelectionPage], shoppingList)
 })
 
 allRecipesTab.addEventListener('click', function(){
   newRecipeRepository.getAllRecipes(recipeDataClasses)
-  hideElement(mainPage)
-  hideElement(myRecipes)
-  hideElement(recipeCardPage)
-  hideElement(shoppingList)
-  showElement(recipeSelectionPage)
+  displayElement([mainPage, myRecipes, recipeCardPage, shoppingList, recipeSelectionPage], recipeSelectionPage)
   showRecipes(newRecipeRepository)
 })
 
 magButton.addEventListener('click', function() {
   newRecipeRepository.getRecipesBySearch(searchInput.value)
-  hideElement(mainPage)
-  hideElement(myRecipes)
-  hideElement(recipeCardPage)
-  hideElement(shoppingList)
-  showElement(recipeSelectionPage)
+  displayElement([mainPage, myRecipes, recipeCardPage, shoppingList, recipeSelectionPage], recipeSelectionPage)
   showRecipes(newRecipeRepository)
   newRecipeRepository.getAllRecipes(recipeDataClasses)
   searchInput.value = ""
 })
 
 clearFilterBtn.addEventListener('click', function(){
-  renderFavRecipes(currentUser.favRecipes)
+  renderRecipes(currentUser.favRecipes, favorites, "favRecipes")
 })
 
-
-const showElement = (element) => {
-  element.classList.remove('hidden')
-}
-
-const hideElement = (element) => {
-  element.classList.add('hidden')
+const displayElement = (hide, show) => {
+  hide.map((element) => {
+    element.classList.add('hidden')
+  })
+  show.classList.remove('hidden')
 }
 
 function getRandomUser(data) {
@@ -139,12 +106,7 @@ function getRandomUser(data) {
 }
 
 const showRecipeCard = (event) => {
-
-  hideElement(recipeSelectionPage)
-  hideElement(mainPage)
-  hideElement(myRecipes)
-  hideElement(shoppingList)
-  showElement(recipeCardPage)
+  displayElement([mainPage, myRecipes, recipeCardPage, shoppingList, recipeSelectionPage], recipeCardPage)
   newRecipeRepository.recipes.forEach(recipe => {
     if(recipe.name === event) {
       currentRecipe = recipe
@@ -160,30 +122,27 @@ const saveRecipe = (event) => {
   } else if(event === 'Add To Favorites') {
     currentUser.addToFavRecipes(currentRecipe)
   }
-  renderRecipesToCook(currentUser.recipesToCook)
-  renderFavRecipes(currentUser.favRecipes)
+  renderRecipes(currentUser.recipesToCook, toCook, "recipesToCook")
+  renderRecipes(currentUser.favRecipes, favorites, "favRecipes")
 }
 window.saveRecipe = saveRecipe;
 
-const deleteFavorite = (event) => {
-  const newFavorites = currentUser.favRecipes.filter((recipe) => {
-    return recipe.name !== event.target.parentElement.innerText
-  })
-  currentUser.favRecipes = newFavorites;
-  renderFavRecipes(currentUser.favRecipes)
+const deleteRecipe = (event, recipes) => {
+  if(recipes === "recipesToCook") {
+    let recipesToCook = currentUser.recipesToCook.filter((recipe) => {
+      return recipe.name !== event.target.parentElement.innerText
+    })
+    currentUser.recipesToCook = recipesToCook
+    renderRecipes(currentUser.recipesToCook, toCook, "recipesToCook")
+  } else {
+    var favRecipes = currentUser.favRecipes.filter((recipe) => {
+      return recipe.name !== event.target.parentElement.innerText
+    })
+  currentUser.favRecipes = favRecipes
+    renderRecipes(currentUser.favRecipes, favorites, "favRecipes")
+  }
 }
-window.deleteFavorite = deleteFavorite;
-
-const deleteToCook = (event) => {
-  const newToCook = currentUser.recipesToCook.filter((recipe) => {
-    return recipe.name !== event.target.parentElement.innerText
-  })
-  currentUser.recipesToCook = newToCook;
-  renderRecipesToCook(currentUser.recipesToCook)
-}
-window.deleteToCook = deleteToCook;
-
-
+window.deleteRecipe = deleteRecipe;
 
 const makeList = (recipe, method) => {;
   if(method === 'ingredient'){
@@ -259,24 +218,14 @@ const formatRecipeCard = () => {
   recipeCardPage.innerHTML = renderer;
 }
 
- const renderRecipesToCook = (recipes) => {
-   toCook.innerHTML = '';
-   recipes.map((recipe) => {
-   toCook.innerHTML +=
-   `<section class="saved-recipe-box">
-      <p onclick="showRecipeCard(event.target.innerText)" class="list-item">${recipe.name}</p>
-      <img onclick='deleteToCook(event)' class="trashcan" src='images/delete.png'/>
-    </section>`
-   })
- }
-
- const renderFavRecipes = (recipes) => {
-   favorites.innerHTML = '';
-   recipes.map((recipe) => {
-   favorites.innerHTML +=
-   `<section class="saved-recipe-box">
-      <p onclick="showRecipeCard(event.target.innerText)" class="list-item">${recipe.name}</p>
-      <img onclick='deleteFavorite(event)' class="trashcan" src='images/delete.png'/>
-    </section>`
- })
+const renderRecipes = (recipes, location, string) => {
+  let stringify = JSON.stringify(string)
+  location.innerHTML = '';
+  recipes.map((recipe) => {
+  location.innerHTML +=
+  `<section class="saved-recipe-box">
+     <p onclick="showRecipeCard(event.target.innerText)" class="list-item">${recipe.name}</p>
+     <img onclick='deleteRecipe(event, ${stringify})' class="trashcan" src='images/delete.png'/>
+   </section>`
+  })
 }
