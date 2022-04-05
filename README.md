@@ -32,6 +32,13 @@ The details of this project are outlined in the <a href="https://frontend.turing
 ### How to View Code in Action:
 Visit the [website](https://sted1994.github.io/whats-cookin-starter-kit/).
 
+### Gif 
+![attempt 3](https://user-images.githubusercontent.com/96502923/161652561-b98a927f-e50a-4941-8239-77fdfe8a2a86.gif)
+![attempt 4](https://user-images.githubusercontent.com/96502923/161652669-d72fdd3d-e4ca-4706-adee-c0aa678c0740.gif)
+![attempt 6](https://user-images.githubusercontent.com/96502923/161652947-bafcacb6-45e5-4551-be50-96a37fb78a51.gif)
+![attempt 5](https://user-images.githubusercontent.com/96502923/161652770-6fa0981e-2f5b-4cd5-b24e-fc33949ddda4.gif)
+
+
 ### What is next?
 The next part of this project will work with the prices, shopping list, and user pantry, as outlined in part 2 of this project. 
 
