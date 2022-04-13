@@ -21,9 +21,6 @@ let currentRecipe;
 let ingredients;
 let usersData;
 let recipeDataClasses;
-window.showRecipeCard = domUpdates.showRecipeCard(currentRecipe);
-window.saveRecipe = saveRecipe;
-
 
 const mainPage = document.querySelector('.main');
 const allRecipesTab = document.querySelector('.all-recipes');
@@ -60,13 +57,17 @@ document.addEventListener('keypress', function(event) {
   if(event.key === "Enter" && searchInput.value){
     newRecipeRepository.getRecipesBySearch(searchInput.value);
     domUpdates.displayElement([mainPage, myRecipes, recipeCardPage, shoppingList, recipeSelectionPage], recipeSelectionPage);
-    domUpdates.showRecipes(newRecipeRepository);
+    domUpdates.showRecipes(newRecipeRepository, ingredients);
     newRecipeRepository.getAllRecipes(recipeDataClasses);
     searchInput.value = "";
   } else if(event.key === "Enter") {
     domUpdates.renderRecipes(currentUser.searchFavs(favSearch.value), favorites, "favRecipes");
     favSearch.value = "";
   };
+});
+
+window.addEventListener('load', function() {
+  domUpdates.displayElement([mainPage, myRecipes, recipeCardPage,  shoppingList, recipeSelectionPage], mainPage);
 });
 
 homeTab.addEventListener('click', function() {
@@ -84,13 +85,13 @@ shoppingTab.addEventListener('click', function() {
 allRecipesTab.addEventListener('click', function(){
   newRecipeRepository.getAllRecipes(recipeDataClasses);
   domUpdates.displayElement([mainPage, myRecipes, recipeCardPage, shoppingList, recipeSelectionPage], recipeSelectionPage);
-  domUpdates.showRecipes(newRecipeRepository);
+  domUpdates.showRecipes(newRecipeRepository, ingredients);
 });
 
 magButton.addEventListener('click', function() {
   newRecipeRepository.getRecipesBySearch(searchInput.value);
   domUpdates.displayElement([mainPage, myRecipes, recipeCardPage, shoppingList, recipeSelectionPage], recipeSelectionPage);
-  domUpdates.showRecipes(newRecipeRepository);
+  domUpdates.showRecipes(newRecipeRepository, ingredients);
   newRecipeRepository.getAllRecipes(recipeDataClasses);
   searchInput.value = "";
 });
@@ -118,6 +119,8 @@ const saveRecipe = (event) => {
   domUpdates.renderRecipes(currentUser.favRecipes, favorites, "favRecipes");
 };
 
+window.saveRecipe = saveRecipe;
+
 const deleteRecipe = (event, recipes) => {
   if(recipes === "recipesToCook") {
     let recipesToCook = currentUser.recipesToCook.filter((recipe) => {
@@ -135,28 +138,14 @@ const deleteRecipe = (event, recipes) => {
 };
 window.deleteRecipe = deleteRecipe;
 
-const makeList = (recipe, method) => {
-  if(method === 'ingredient'){
-    var list = recipe.getIngredients(ingredients);
-    //create new method instead of domUpdates with below two lines
-    var displayList = list.reduce((string, ingredient) => {
-    string += `<li class="recipe-select-ingredient">${ingredient}</li>`;
-    return string;
-    }, " ");
-    } else if(method === 'instructions'){
-    var list = recipe.getInstructions(ingredients);
-    var displayList = list.reduce((string, instruction) => {
-    string += `<li class="instruction">${instruction}</li>`;
-    return string;
-    }, " ");
-};
-    return displayList;
-},
-
 const assignCurrentRecipe = (event) => {
   newRecipeRepository.recipes.forEach(recipe => {
     if(recipe.name === event) {
       currentRecipe = recipe;
     };
   });
+  return currentRecipe
 }
+window.assignCurrentRecipe = assignCurrentRecipe
+
+window.ingredients = ingredients

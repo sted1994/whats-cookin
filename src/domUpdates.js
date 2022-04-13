@@ -18,7 +18,7 @@ const toCook = document.querySelector('.recipes-to-cook-list');
 const favorites = document.querySelector('.favorite-recipes-list');
 const favSearch = document.getElementById("recipe-search-input");
 const clearFilterBtn = document.querySelector('.clear-filter-Btn');
-//let currentRecipe;
+let allIngredients;
 
 
 const domUpdates = {
@@ -30,16 +30,31 @@ const domUpdates = {
   show.classList.remove('hidden');
 },
 
-showRecipeCard(currentRecipe) {
+showRecipeCard() {
   domUpdates.displayElement([mainPage, myRecipes, recipeCardPage, shoppingList, recipeSelectionPage], recipeCardPage);
-  //assignCurrentRecipe(event);
-  domUpdates.formatRecipeCard(currentRecipe);
 },
 
- showRecipes(recipeInfo) {
+makeList(recipe, method, ingredients) {
+  if(method === 'ingredient'){
+    var list = recipe.getIngredients(ingredients);
+    var displayList = list.reduce((string, ingredient) => {
+    string += `<li class="recipe-select-ingredient">${ingredient}</li>`;
+    return string;
+    }, " ");
+    } else if(method === 'instructions'){
+    var list = recipe.getInstructions(ingredients);
+    var displayList = list.reduce((string, instruction) => {
+    string += `<li class="instruction">${instruction}</li>`;
+    return string;
+    }, " ");
+};
+    return displayList;
+},
+
+ showRecipes(recipeInfo, ingredients) {
   let renderer = " ";
     recipeInfo.recipes.map(recipe => {
-    const ingredientList = domUpdates.makeList(recipe, "ingredient");
+    const ingredientList = domUpdates.makeList(recipe, "ingredient", ingredients);
     renderer +=
     `<section class="recipe-select-box">
        <h1 class="recipe-select-name">${recipe.name}</h1>
@@ -49,19 +64,19 @@ showRecipeCard(currentRecipe) {
           ${ingredientList}
          </ul>
        </div>
-       <button onclick="showRecipeCard(event.target.classList.value)" id="view-recipe-btn" class="${recipe.name}">View Recipe</button>
-
+       <button onclick="domUpdates.showRecipeCard();domUpdates.formatRecipeCard(event);" id="view-recipe-btn" class="${recipe.name}">View Recipe</button>
      </section>`;
     recipeSelectionPage.innerHTML = renderer;
   });
+  allIngredients = ingredients;
 },
 
-
-
-formatRecipeCard(currentRecipe) {
-  const ingredientList = domUpdates.makeList(currentRecipe, 'ingredient');
-  const instructionList = domUpdates.makeList(currentRecipe, 'instructions');
-  const price = currentRecipe.getCostOfIngredients(ingredients);
+formatRecipeCard(event) {
+  let currentRecipe = assignCurrentRecipe(event.target.classList.value)
+  const ingredientList = domUpdates.makeList(currentRecipe, 'ingredient', currentRecipe.ingredients);
+  console.log(currentRecipe.ingredients);
+  const instructionList = domUpdates.makeList(currentRecipe, 'instructions', currentRecipe.instructions);
+  const price = currentRecipe.getCostOfIngredients(allIngredients);
   let renderer = "";
   const card =
   `<h1 class="recipe-title">${currentRecipe.name}</h1>
@@ -101,10 +116,17 @@ renderRecipes(recipes, location, string) {
   recipes.map((recipe) => {
   location.innerHTML +=
   `<section class="saved-recipe-box">
-     <p onclick="showRecipeCard(event.target.innerText);   assignCurrentRecipe(event);" class="list-item">${recipe.name}</p>
+     <p onclick="assignCurrentRecipe(event); domUpdates.showRecipeCard();" class="list-item">${recipe.name}</p>
      <img onclick='deleteRecipe(event, ${stringify})' class="trashcan" src='images/delete.png'/>
    </section>`;
  });
 },
 };
+
+window.domUpdates = domUpdates
+
+window.showRecipeCard = domUpdates.showRecipeCard
+
+window.formatRecipeCard = domUpdates.formatRecipeCard;
+
 export { domUpdates };
