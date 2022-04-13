@@ -28,7 +28,6 @@ const recipeSelectionPage = document.querySelector('.recipe-selection');
 const searchInput = document.getElementById("search-input");
 const magButton = document.querySelector(".mag-btn");
 const recipeCardPage = document.querySelector('.display-recipe');
-//const recipeCardTitle = document.querySelector('.recipe-title');
 const myRecipes = document.querySelector('.my-recipes');
 const toCookBox = document.getElementById('recipes-to-cook');
 const favRecipes = document.getElementById('fav-recipes');
@@ -44,6 +43,8 @@ const clearFilterBtn = document.querySelector('.clear-filter-Btn');
 
 const promise = Promise.all([data.recipes, data.ingredients, data.users]).then(results => {
    ingredients = results[1].ingredientsData;
+   domUpdates.list = results[1].ingredientsData;
+   domUpdates.pages = [mainPage, myRecipes, recipeCardPage, shoppingList, recipeSelectionPage];
    usersData = results[2].usersData;
    recipeDataClasses = results[0].recipeData.map((recipe) => {
    return new RecipeCard(recipe);
@@ -53,6 +54,9 @@ const promise = Promise.all([data.recipes, data.ingredients, data.users]).then(r
 
 
 //if we have time we would like to refactor the function below to be more SRP
+
+
+
 document.addEventListener('keypress', function(event) {
   if(event.key === "Enter" && searchInput.value){
     newRecipeRepository.getRecipesBySearch(searchInput.value);
@@ -147,5 +151,3 @@ const assignCurrentRecipe = (event) => {
   return currentRecipe
 }
 window.assignCurrentRecipe = assignCurrentRecipe
-
-window.ingredients = ingredients
