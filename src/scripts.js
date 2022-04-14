@@ -40,22 +40,16 @@ const favorites = document.querySelector('.favorite-recipes-list');
 const favSearch = document.getElementById("recipe-search-input");
 const clearFilterBtn = document.querySelector('.clear-filter-Btn');
 
-
 const promise = Promise.all([data.recipes, data.ingredients, data.users]).then(results => {
-   ingredients = results[1].ingredientsData;
-   domUpdates.list = results[1].ingredientsData;
+   ingredients = results[1];
+   domUpdates.list = results[1];
    domUpdates.pages = [mainPage, myRecipes, recipeCardPage, shoppingList, recipeSelectionPage];
-   usersData = results[2].usersData;
-   recipeDataClasses = results[0].recipeData.map((recipe) => {
+   usersData = results[2];
+   recipeDataClasses = results[0].map((recipe) => {
    return new RecipeCard(recipe);
    })
    newRecipeRepository = new RecipeRepository(recipeDataClasses);
 }).then(randomUser => getRandomUser());
-
-
-//if we have time we would like to refactor the function below to be more SRP
-
-
 
 document.addEventListener('keypress', function(event) {
   if(event.key === "Enter" && searchInput.value){
@@ -104,10 +98,6 @@ clearFilterBtn.addEventListener('click', function(){
   domUpdates.renderRecipes(currentUser.favRecipes, favorites, "favRecipes");
 });
 
-
-
-
-
 function getRandomUser(data) {
   let user = usersData[Math.floor(Math.random() * usersData.length)];
   currentUser = new User(user);
@@ -122,7 +112,6 @@ const saveRecipe = (event) => {
   domUpdates.renderRecipes(currentUser.recipesToCook, toCook, "recipesToCook");
   domUpdates.renderRecipes(currentUser.favRecipes, favorites, "favRecipes");
 };
-
 window.saveRecipe = saveRecipe;
 
 const deleteRecipe = (event, recipes) => {
