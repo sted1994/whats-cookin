@@ -12,6 +12,7 @@ import './images/delete.png';
 import { RecipeCard } from './classes/RecipeCard';
 import { RecipeRepository } from './classes/RecipeRepository';
 import { User } from './classes/User';
+import { Pantry } from './classes/Pantry';
 import { domUpdates } from './domUpdates';
 import { data } from './apiCalls';
 
@@ -21,6 +22,7 @@ let currentRecipe;
 let ingredients;
 let usersData;
 let recipeDataClasses;
+let currentPantry;
 
 const mainPage = document.querySelector('.main');
 const allRecipesTab = document.querySelector('.all-recipes');
@@ -34,22 +36,28 @@ const favRecipes = document.getElementById('fav-recipes');
 const shoppingList = document.querySelector('.shopping-list-page');
 const homeTab = document.querySelector('.home');
 const myRecipesTab = document.querySelector('.saved-recipes');
-const shoppingTab = document.querySelector('.shopping-list');
+const shoppingTab = document.querySelector('.shopping-list-tab');
 const toCook = document.querySelector('.recipes-to-cook-list');
 const favorites = document.querySelector('.favorite-recipes-list');
 const favSearch = document.getElementById("recipe-search-input");
 const clearFilterBtn = document.querySelector('.clear-filter-Btn');
+const pantry = document.querySelector('.pantry-list');
+const groceryList = document.querySelector('.shopping-list');
 
 const promise = Promise.all([data.recipes, data.ingredients, data.users]).then(results => {
    ingredients = results[1];
    domUpdates.list = results[1];
-   domUpdates.pages = [mainPage, myRecipes, recipeCardPage, shoppingList, recipeSelectionPage];
+   domUpdates.elements = [mainPage, myRecipes, recipeCardPage, shoppingList, recipeSelectionPage, pantry, groceryList];
    usersData = results[2];
    recipeDataClasses = results[0].map((recipe) => {
    return new RecipeCard(recipe);
    })
    newRecipeRepository = new RecipeRepository(recipeDataClasses);
-}).then(randomUser => getRandomUser());
+}).then(randomUser => {
+  getRandomUser()
+  currentPantry = new Pantry(currentUser.userInfo.pantry);
+  domUpdates.pantry = currentPantry;
+});
 
 document.addEventListener('keypress', function(event) {
   if(event.key === "Enter" && searchInput.value){
@@ -78,6 +86,8 @@ myRecipesTab.addEventListener('click', function() {
 
 shoppingTab.addEventListener('click', function() {
   domUpdates.displayElement([mainPage, myRecipes, recipeCardPage, shoppingList, recipeSelectionPage], shoppingList);
+  pantry.classList.remove("hidden")
+  groceryList.classList.remove("hidden")
 });
 
 allRecipesTab.addEventListener('click', function(){
@@ -98,9 +108,10 @@ clearFilterBtn.addEventListener('click', function(){
   domUpdates.renderRecipes(currentUser.favRecipes, favorites, "favRecipes");
 });
 
-function getRandomUser(data) {
+function getRandomUser() {
   let user = usersData[Math.floor(Math.random() * usersData.length)];
   currentUser = new User(user);
+  // console.log(currentUser);
 };
 
 const saveRecipe = (event) => {
@@ -135,6 +146,7 @@ const assignCurrentRecipe = (event) => {
   newRecipeRepository.recipes.forEach(recipe => {
     if(recipe.name === event) {
       currentRecipe = recipe;
+      domUpdates.recipe = recipe;
     };
   });
   return currentRecipe

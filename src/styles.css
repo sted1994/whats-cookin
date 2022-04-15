@@ -93,6 +93,8 @@ h1 {
   height: 25px;
 }
 
+.pantry-list,
+.shopping-list,
 .favorite-recipes-list,
 .recipes-to-cook-list{
   cursor: pointer;

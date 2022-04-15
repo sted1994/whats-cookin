@@ -11,7 +11,7 @@
     <nav class="nav-bar">
       <p class="home nav-button">Home</p>
       <p class="saved-recipes nav-button">Saved Recipes</p>
-      <p class="shopping-list nav-button">Shopping List</p>
+      <p class="shopping-list-tab nav-button">Shopping List</p>
       <p class="all-recipes nav-button">All Recipes</p>
     </nav>
     <main class="main">
@@ -64,6 +64,21 @@
       <!-- This is where Recipe Card will displpay -->
     </section>
     <section class="shopping-list-page hidden">
+      <h1 class="my-recipes-title">Shopping List</h1>
+      <div class="my-recipes-flexbox">
+        <div class="my-recipes-box" id="recipes-to-cook">
+          <h2 class="my-recipes-title">Ingredients On Hand</h2>
+          <ul class="pantry-list">
+            <p class="list-item">Add ingredients to you pantry to see them here!</p>
+            </ul>
+        </div>
+        <div class="my-recipes-box" id="fav-recipes">
+          <h2 class="my-recipes-title">Ingredients To Buy</h2>
+          <ul class="shopping-list">
+            <p class="list-item">Add ingredients to your shopping list to see them here!</p>
+          </ul>
+        </div>
+      </div>
     </section>
   </body>
   <script src="bundle.js"></script>
