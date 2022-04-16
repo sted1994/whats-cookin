@@ -12,13 +12,6 @@ const domUpdates = {
   show.classList.remove('hidden');
   },
 
-  // renderShoppingList(location) {
-  //   location.innerHTML = " ";
-  //   domUpdates.recipe.ingredients.forEach(item => {
-  //     domUpdates.list.forEach(ingredient => {})
-  //   })
-  // },
-
   makeList(recipe, method) {
     if(method === 'ingredient'){
       var list = recipe.getIngredients(domUpdates.list);
@@ -107,8 +100,7 @@ const domUpdates = {
   renderPantry(location, list) {
     location.innerHTML = '';
     if (list === domUpdates.pantry.shoppingList) {
-      domUpdates.pantry.calculateShoppingList(domUpdates.recipe.ingredients)
-      domUpdates.pantry.removeItems();
+      //domUpdates.pantry.calculateShoppingList(domUpdates.recipe.ingredients)
       domUpdates.pantry.shoppingList.map((item) => {
         console.log('THERE', domUpdates.pantry.shoppingList);
         domUpdates.list.forEach(ingredient => {

@@ -43,6 +43,9 @@ const favSearch = document.getElementById("recipe-search-input");
 const clearFilterBtn = document.querySelector('.clear-filter-Btn');
 const pantry = document.querySelector('.pantry-list');
 const groceryList = document.querySelector('.shopping-list');
+const submitIngredientBtn = document.querySelector('.submit-ingredient')
+const ingredientToAdd = document.querySelector('.ingredient-to-add')
+const amountToAdd = document.querySelector('.number-to-add')
 
 const promise = Promise.all([data.recipes, data.ingredients, data.users]).then(results => {
    ingredients = results[1];
@@ -57,6 +60,7 @@ const promise = Promise.all([data.recipes, data.ingredients, data.users]).then(r
   getRandomUser()
   currentPantry = new Pantry(currentUser.userInfo.pantry);
   domUpdates.pantry = currentPantry;
+  domUpdates.renderPantry(pantry, domUpdates.pantry.userPantry)
 });
 
 document.addEventListener('keypress', function(event) {
@@ -108,10 +112,14 @@ clearFilterBtn.addEventListener('click', function(){
   domUpdates.renderRecipes(currentUser.favRecipes, favorites, "favRecipes");
 });
 
+submitIngredientBtn.addEventListener('click', function(event){
+  addIngredient(ingredientToAdd.value, parseInt(amountToAdd.value))
+  domUpdates.renderPantry(pantry, domUpdates.pantry.userPantry)
+})
+
 function getRandomUser() {
   let user = usersData[Math.floor(Math.random() * usersData.length)];
   currentUser = new User(user);
-  // console.log(currentUser);
 };
 
 const saveRecipe = (event) => {
@@ -150,5 +158,26 @@ const assignCurrentRecipe = (event) => {
     };
   });
   return currentRecipe
+}
+
+const addIngredient = (ingredient, amount) => {
+  const test = {
+    ingredient: null,
+    amount: amount
+  };
+  ingredients.forEach(item => {
+    if(item.name === ingredient && domUpdates.pantry.userPantry.find(stock => item.id === stock.ingredient)){
+      domUpdates.pantry.userPantry.forEach(stock => {
+        if(item.id === stock.ingredient){
+          stock.amount += amount
+        }
+      })
+    } else if(item.name === ingredient && !domUpdates.pantry.userPantry.find(stock => item.id === stock.ingredient)){
+      test.ingredient = item.id
+      domUpdates.pantry.userPantry.push(test)
+    } else {
+      alert('you fucked up')
+    }
+  })
 }
 window.assignCurrentRecipe = assignCurrentRecipe
