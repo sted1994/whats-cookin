@@ -108,14 +108,16 @@ const domUpdates = {
     location.innerHTML = '';
     if (list === domUpdates.pantry.shoppingList) {
       domUpdates.pantry.calculateShoppingList(domUpdates.recipe.ingredients)
+      domUpdates.pantry.removeItems();
       domUpdates.pantry.shoppingList.map((item) => {
+        console.log('THERE', domUpdates.pantry.shoppingList);
         domUpdates.list.forEach(ingredient => {
           if (item.id === ingredient.id) {
-            domUpdates.pantry.userPantry.forEach(stock => {
-              if (stock.ingredient === item.id) {
-                location.innerHTML += `<li>${ingredient.name} - ${item.quantity.amount - stock.amount} units</li>`;
-              }
-            })
+          //   domUpdates.pantry.userPantry.forEach(stock => {
+          //     if (stock.ingredient === item.id) {
+                location.innerHTML += `<li>${ingredient.name} - ${item.quantity.amount} units</li>`;
+            //   }
+            // })
             // location.innerHTML += `<li>${ingredient.name} - ${item.quantity.amount} units</li>`;
           };
         });
