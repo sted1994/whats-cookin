@@ -14,6 +14,17 @@ body {
   background-size: cover;
 }
 
+
+.add-ingredient{
+  display: flex;
+}
+
+
+
+
+
+
+
 /*~~~~~~~~Nav Bar~~~~~~~~*/
 
 nav {
@@ -93,6 +104,8 @@ h1 {
   height: 25px;
 }
 
+.pantry-list,
+.shopping-list,
 .favorite-recipes-list,
 .recipes-to-cook-list{
   cursor: pointer;

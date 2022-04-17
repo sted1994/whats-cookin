@@ -1,7 +1,9 @@
 const domUpdates = {
 
   list: null,
-  pages: null,
+  elements: null,
+  pantry: null,
+  recipe: null,
 
   displayElement(hide, show)  {
     hide.map((element) => {
@@ -40,9 +42,9 @@ const domUpdates = {
             ${ingredientList}
           </ul>
         </div>
-        <button onclick="domUpdates.displayElement(domUpdates.pages, domUpdates.pages[2]);domUpdates.formatRecipeCard(event.target.classList.value);" id="view-recipe-btn" class="${recipe.name}">View Recipe</button>
+        <button onclick="domUpdates.displayElement(domUpdates.elements, domUpdates.elements[2]);domUpdates.formatRecipeCard(event.target.classList.value);" id="view-recipe-btn" class="${recipe.name}">View Recipe</button>
       </section>`;
-    domUpdates.pages[4].innerHTML = renderer;
+    domUpdates.elements[4].innerHTML = renderer;
     });
   },
 
@@ -65,7 +67,6 @@ const domUpdates = {
       </article>
       <section class="cost-info-section">
         <p class="recipe-cost">Ingredient Cost: ${price}</p>
-        <button class="add-ingredients-btn">Add To Shopping List!</button>
       </section>
       <p class="card-section-title">Instructions:</p>
       <article class="instructions">
@@ -75,13 +76,13 @@ const domUpdates = {
       </article>
       </section>
       <section class="save-buttons">
-        <button onclick="saveRecipe(event.target.innerText)"
+        <button onclick="saveRecipe(event.target.innerText);renderPantry(domUpdates.elements[5], domUpdates.pantry.userPantry);renderPantry(domUpdates.elements[6], domUpdates.pantry.shoppingList)"
         class="recipes-to-save-btn">Add To Saved Recipes</button>
         <button onclick="saveRecipe(event.target.innerText)"
         class="recipes-to-save-btn">Add To Favorites</button>
       </section>`;
     renderer = card;
-    domUpdates.pages[2].innerHTML = renderer;
+    domUpdates.elements[2].innerHTML = renderer;
   },
 
   renderRecipes(recipes, location, string) {
@@ -90,14 +91,44 @@ const domUpdates = {
     recipes.map((recipe) => {
     location.innerHTML +=
     `<section class="saved-recipe-box">
-       <p onclick="assignCurrentRecipe(event.target.innerText);formatRecipeCard(event.target.innerText);domUpdates.displayElement(domUpdates.pages, domUpdates.pages[2]);" class="list-item">${recipe.name}</p>
-       <img onclick='deleteRecipe(event, ${stringify})' class="trashcan" src='images/  delete.png'/>
+       <p onclick="assignCurrentRecipe(event.target.innerText);formatRecipeCard(event.target.innerText);domUpdates.displayElement(domUpdates.elements, domUpdates.elements[2]);" class="list-item">${recipe.name}</p>
+       <img onclick='deleteRecipe(event, ${stringify})' class="trashcan" src='images/delete.png'/>
      </section>`;
    });
   },
-};
+
+  renderPantry(location, list) {
+    location.innerHTML = '';
+    if (list === domUpdates.pantry.shoppingList) {
+      domUpdates.pantry.shoppingList.map((item) => {
+        console.log('THERE', domUpdates.pantry.shoppingList);
+        domUpdates.list.forEach(ingredient => {
+          if (item.id === ingredient.id) {
+          //   domUpdates.pantry.userPantry.forEach(stock => {
+          //     if (stock.ingredient === item.id) {
+                location.innerHTML += `<li>${ingredient.name} - ${item.quantity.amount} units</li>`;
+            //   }
+            // })
+            // location.innerHTML += `<li>${ingredient.name} - ${item.quantity.amount} units</li>`;
+          };
+        });
+      });
+    }
+    list.map((item) => {
+      domUpdates.list.forEach(ingredient => {
+        if (item.ingredient === ingredient.id)
+        location.innerHTML += `<li>${ingredient.name} - ${item.amount} units</li>`;
+      });
+    });
+  }
+
+}
 
 window.domUpdates = domUpdates;
+
+window.renderPantry = domUpdates.renderPantry;
+
+window.renderShoppingList = domUpdates.renderShoppingList;
 
 window.showRecipeCard = domUpdates.showRecipeCard;
 

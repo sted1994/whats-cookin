@@ -12,6 +12,7 @@ import './images/delete.png';
 import { RecipeCard } from './classes/RecipeCard';
 import { RecipeRepository } from './classes/RecipeRepository';
 import { User } from './classes/User';
+import { Pantry } from './classes/Pantry';
 import { domUpdates } from './domUpdates';
 import { data } from './apiCalls';
 
@@ -21,6 +22,7 @@ let currentRecipe;
 let ingredients;
 let usersData;
 let recipeDataClasses;
+let currentPantry;
 
 const mainPage = document.querySelector('.main');
 const allRecipesTab = document.querySelector('.all-recipes');
@@ -34,22 +36,33 @@ const favRecipes = document.getElementById('fav-recipes');
 const shoppingList = document.querySelector('.shopping-list-page');
 const homeTab = document.querySelector('.home');
 const myRecipesTab = document.querySelector('.saved-recipes');
-const shoppingTab = document.querySelector('.shopping-list');
+const shoppingTab = document.querySelector('.shopping-list-tab');
 const toCook = document.querySelector('.recipes-to-cook-list');
 const favorites = document.querySelector('.favorite-recipes-list');
 const favSearch = document.getElementById("recipe-search-input");
 const clearFilterBtn = document.querySelector('.clear-filter-Btn');
+const pantry = document.querySelector('.pantry-list');
+const groceryList = document.querySelector('.shopping-list');
+const submitIngredientBtn = document.querySelector('.submit-ingredient')
+const ingredientToAdd = document.querySelector('.ingredient-to-add')
+const amountToAdd = document.querySelector('.number-to-add')
+const errorMsg = document.querySelector('.error-msg')
 
 const promise = Promise.all([data.recipes, data.ingredients, data.users]).then(results => {
    ingredients = results[1];
    domUpdates.list = results[1];
-   domUpdates.pages = [mainPage, myRecipes, recipeCardPage, shoppingList, recipeSelectionPage];
+   domUpdates.elements = [mainPage, myRecipes, recipeCardPage, shoppingList, recipeSelectionPage, pantry, groceryList];
    usersData = results[2];
    recipeDataClasses = results[0].map((recipe) => {
    return new RecipeCard(recipe);
    })
    newRecipeRepository = new RecipeRepository(recipeDataClasses);
-}).then(randomUser => getRandomUser());
+}).then(randomUser => {
+  getRandomUser()
+  currentPantry = new Pantry(currentUser.userInfo.pantry);
+  domUpdates.pantry = currentPantry;
+  domUpdates.renderPantry(pantry, domUpdates.pantry.userPantry)
+});
 
 document.addEventListener('keypress', function(event) {
   if(event.key === "Enter" && searchInput.value){
@@ -57,15 +70,17 @@ document.addEventListener('keypress', function(event) {
     domUpdates.displayElement([mainPage, myRecipes, recipeCardPage, shoppingList, recipeSelectionPage], recipeSelectionPage);
     domUpdates.showRecipes(newRecipeRepository, ingredients);
     newRecipeRepository.getAllRecipes(recipeDataClasses);
-    searchInput.value = "";
+    clearInput(searchInput);
   } else if(event.key === "Enter") {
     domUpdates.renderRecipes(currentUser.searchFavs(favSearch.value), favorites, "favRecipes");
-    favSearch.value = "";
+    clearInput(favSearch);
   };
 });
 
 window.addEventListener('load', function() {
   domUpdates.displayElement([mainPage, myRecipes, recipeCardPage,  shoppingList, recipeSelectionPage], mainPage);
+  errorMsg.classList.add("hidden")
+
 });
 
 homeTab.addEventListener('click', function() {
@@ -78,6 +93,8 @@ myRecipesTab.addEventListener('click', function() {
 
 shoppingTab.addEventListener('click', function() {
   domUpdates.displayElement([mainPage, myRecipes, recipeCardPage, shoppingList, recipeSelectionPage], shoppingList);
+  pantry.classList.remove("hidden")
+  groceryList.classList.remove("hidden")
 });
 
 allRecipesTab.addEventListener('click', function(){
@@ -91,21 +108,30 @@ magButton.addEventListener('click', function() {
   domUpdates.displayElement([mainPage, myRecipes, recipeCardPage, shoppingList, recipeSelectionPage], recipeSelectionPage);
   domUpdates.showRecipes(newRecipeRepository, ingredients);
   newRecipeRepository.getAllRecipes(recipeDataClasses);
-  searchInput.value = "";
+  clearInpuut(searchInput);
 });
 
 clearFilterBtn.addEventListener('click', function(){
   domUpdates.renderRecipes(currentUser.favRecipes, favorites, "favRecipes");
 });
 
-function getRandomUser(data) {
+submitIngredientBtn.addEventListener('click', function(event){
+  event.preventDefault()
+  addIngredient(ingredientToAdd.value, Number(amountToAdd.value))
+  showError(ingredientToAdd.value, Number(amountToAdd.value))
+  domUpdates.renderPantry(pantry, domUpdates.pantry.userPantry)
+  clearInput(ingredientToAdd);
+  clearInput(amountToAdd);
+})
+
+function getRandomUser() {
   let user = usersData[Math.floor(Math.random() * usersData.length)];
   currentUser = new User(user);
 };
 
 const saveRecipe = (event) => {
   if(event === 'Add To Saved Recipes') {
-    currentUser.addToCookRecipes(currentRecipe);
+    checkPantry(currentRecipe.ingredients)
   } else if(event === 'Add To Favorites') {
     currentUser.addToFavRecipes(currentRecipe);
   };
@@ -135,8 +161,104 @@ const assignCurrentRecipe = (event) => {
   newRecipeRepository.recipes.forEach(recipe => {
     if(recipe.name === event) {
       currentRecipe = recipe;
+      domUpdates.recipe = recipe;
     };
   });
   return currentRecipe
 }
+
+const addIngredient = (ingredient, amount) => {
+  const test = {
+    ingredient: null,
+    amount: amount
+  };
+  ingredients.forEach(item => {
+    if(item.name === ingredient && domUpdates.pantry.userPantry.find(stock => item.id === stock.ingredient)){
+      domUpdates.pantry.userPantry.forEach(stock => {
+        if(item.id === stock.ingredient){
+          stock.amount += amount
+        }
+      })
+    } else if(item.name === ingredient && !domUpdates.pantry.userPantry.find(stock => item.id === stock.ingredient)){
+      test.ingredient = item.id
+      domUpdates.pantry.userPantry.push(test)
+    }
+  })
+  errorMsg.classList.add("hidden")
+}
+
+const showError = (ingredient, amount) => {
+  let error = true;
+  var a = document.forms["form"]["ingredient"].value;
+  var b = document.forms["form"]["amount"].value;
+  ingredients.forEach(item => {
+    if (ingredient === item.name) {
+      error = false;
+    };
+  });
+    if(!a || !b) {
+      errorMsg.innerText = "Motherfuckers, you need to fill in both fields before submitting!"
+      error = true;
+    };
+     if (error === true) {
+       errorMsg.classList.remove("hidden")
+  };
+    errorMsg.innerText = "Sorry, the ingredient you entered is invalid"
+};
+
+const clearInput = (input) => {
+  input.value = ""
+};
+
+const checkPantry = (ingredients) => {
+  let cantCook = null
+  let idList = [];
+  currentPantry.userPantry.forEach(item => {
+    idList.push(item.ingredient)
+  })
+  for (var i = 0; i < currentPantry.userPantry.length; i++) {
+    console.log("WHAT", idList);
+    for (var j = 0; j < ingredients.length; j++) {
+      if ((currentPantry.userPantry[i].ingredient === ingredients[j].id) && (ingredients[j].quantity.amount > currentPantry.userPantry[i].amount)){
+        console.log("not enough in stock", ingredients[j]);
+        return cantCook = true;
+      } else if (((currentPantry.userPantry[i].ingredient === ingredients[j].id) && (ingredients[j].quantity.amount <= currentPantry.userPantry[i].amount))) {
+        console.log("WE GOT IT", ingredients[j]);
+        cantCook = false
+      } else if (!idList.includes(ingredients[j].id)) {
+        console.log("we dont got it", ingredients[j]);
+        console.log("NO", currentPantry.userPantry);
+        return cantCook = true
+      }
+    };
+    if (cantCook === false) {
+      currentUser.addToCookRecipes(currentRecipe);
+      return true
+    }
+  };
+
+  // let idList = [];
+  // let cantCook = null
+  // currentPantry.userPantry.forEach(stock => {
+  //   idList.push(stock.ingredient)
+  //   ingredients.forEach(ingredient => {
+  //     if ((stock.ingredient === ingredient.id) && (ingredient.quantity.amount > stock.amount)){
+  //       console.log("not enough in stock", ingredient);
+  //       cantCook = true;
+  //     } else if ((stock.ingredient === ingredient.id) && (ingredient.quantity.amount <= stock.amount)) {
+  //       console.log("WE GOT IT", ingredient);
+  //       cantCook = false
+  //     } else if (!idList.includes(ingredient.id)) {
+  //       console.log("we dont got it", ingredient);
+  //       cantCook = true
+  //     }
+  //   });
+  // });
+  // console.log("recipes to cook", currentUser.recipesToCook);
+  // if (cantCook === false) {
+  //   currentUser.addToCookRecipes(currentRecipe);
+  //   console.log("AFTER", currentUser.recipesToCook);
+  // };
+}
+
 window.assignCurrentRecipe = assignCurrentRecipe
