@@ -47,6 +47,7 @@ const submitIngredientBtn = document.querySelector('.submit-ingredient')
 const ingredientToAdd = document.querySelector('.ingredient-to-add')
 const amountToAdd = document.querySelector('.number-to-add')
 const errorMsg = document.querySelector('.error-msg')
+const errorMessage = document.querySelector('.error-message')
 
 const promise = Promise.all([data.recipes, data.ingredients, data.users]).then(results => {
    ingredients = results[1];
@@ -197,13 +198,13 @@ const showError = (ingredient, amount) => {
     };
   });
     if(!a || !b) {
-      errorMsg.innerText = "Motherfuckers, you need to fill in both fields before submitting!"
+      errorMsg.innerText = "Both fields need to be filled"
       error = true;
     };
      if (error === true) {
        errorMsg.classList.remove("hidden")
   };
-    errorMsg.innerText = "Sorry, the ingredient you entered is invalid"
+    errorMsg.innerText = "Sorry, the ingredient entered is invalid"
 };
 
 const clearInput = (input) => {
@@ -211,54 +212,31 @@ const clearInput = (input) => {
 };
 
 const checkPantry = (ingredients) => {
-  let cantCook = null
+  let cantCook = true;
   let idList = [];
   currentPantry.userPantry.forEach(item => {
     idList.push(item.ingredient)
   })
   for (var i = 0; i < currentPantry.userPantry.length; i++) {
-    console.log("WHAT", idList);
     for (var j = 0; j < ingredients.length; j++) {
       if ((currentPantry.userPantry[i].ingredient === ingredients[j].id) && (ingredients[j].quantity.amount > currentPantry.userPantry[i].amount)){
-        console.log("not enough in stock", ingredients[j]);
-        return cantCook = true;
+         cantCook = true;
+         domUpdates.needMoreStockError(event)
+
       } else if (((currentPantry.userPantry[i].ingredient === ingredients[j].id) && (ingredients[j].quantity.amount <= currentPantry.userPantry[i].amount))) {
-        console.log("WE GOT IT", ingredients[j]);
         cantCook = false
       } else if (!idList.includes(ingredients[j].id)) {
-        console.log("we dont got it", ingredients[j]);
-        console.log("NO", currentPantry.userPantry);
-        return cantCook = true
+         cantCook = true
+         domUpdates.needMoreStockError(event)
+
       }
     };
     if (cantCook === false) {
       currentUser.addToCookRecipes(currentRecipe);
-      return true
+      currentPantry.removeStockFromPantry(currentRecipe)
     }
   };
 
-  // let idList = [];
-  // let cantCook = null
-  // currentPantry.userPantry.forEach(stock => {
-  //   idList.push(stock.ingredient)
-  //   ingredients.forEach(ingredient => {
-  //     if ((stock.ingredient === ingredient.id) && (ingredient.quantity.amount > stock.amount)){
-  //       console.log("not enough in stock", ingredient);
-  //       cantCook = true;
-  //     } else if ((stock.ingredient === ingredient.id) && (ingredient.quantity.amount <= stock.amount)) {
-  //       console.log("WE GOT IT", ingredient);
-  //       cantCook = false
-  //     } else if (!idList.includes(ingredient.id)) {
-  //       console.log("we dont got it", ingredient);
-  //       cantCook = true
-  //     }
-  //   });
-  // });
-  // console.log("recipes to cook", currentUser.recipesToCook);
-  // if (cantCook === false) {
-  //   currentUser.addToCookRecipes(currentRecipe);
-  //   console.log("AFTER", currentUser.recipesToCook);
-  // };
 }
 
 window.assignCurrentRecipe = assignCurrentRecipe

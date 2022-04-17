@@ -3,37 +3,44 @@ export class Pantry {
     this.userPantry = userPantry;
     this.shoppingList = [];
   };
-
-  // ingredient.id, ingredient.quantity.amount
-  // stock.ingredient, stock.amount
-
   calculateShoppingList(ingredients) {
-    ingredients.forEach(ingredient => {
-      this.shoppingList.forEach(item => {
-        this.userPantry.forEach(stock => {
-          if(!this.shoppingList.includes(ingredient)){
-            this.shoppingList.push(ingredient);
-          } else if(ingredient === item) {
-            item.quantity.amount += ingredient.quantity.amount
-            this.shoppingList.push(ingredient);
-          }
-        });
-      })
-    });
-  };
-
-  removeItems() {
+    console.log('HERE', ingredients);
+    if(!this.shoppingList[0]){
+     ingredients.forEach(ingredient => {
+       this.shoppingList.push(ingredient)
+     });
+    } else {
+     this.shoppingList.forEach(item => {
+       ingredients.forEach(ingredient => {
+         if(item.id === ingredient.id){
+           item.quantity.amount += ingredient.quantity.amount
+         }
+       })
+     })
+    }
     this.userPantry.forEach(stock => {
       this.shoppingList.forEach(item => {
         if(item.id === stock.ingredient && item.quantity.amount <= stock.amount) {
           this.shoppingList.splice(this.shoppingList.indexOf(item), 1)
-          stock.amount -= item.quantity.amount
+          //stock.amount -= item.quantity.amount
         } else if(item.id === stock.ingredient && item.quantity.amount > stock.amount) {
           item.quantity.amount -= stock.amount
         }
       })
     })
-  }
+  };
+
+removeStockFromPantry(recipe) {
+  this.userPantry.forEach(stock => {
+
+    recipe.ingredients.forEach(ingredient => {
+      if(stock.ingredient === ingredient.id) {
+        console.log('POOP', stock.amount)
+        stock.amount -= ingredient.quantity.amount
+      }
+    })
+  })
+}
 
 };
 

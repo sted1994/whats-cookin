@@ -5,6 +5,7 @@ const domUpdates = {
   pantry: null,
   recipe: null,
 
+
   displayElement(hide, show)  {
     hide.map((element) => {
       element.classList.add('hidden');
@@ -53,7 +54,8 @@ const domUpdates = {
     const ingredientList = domUpdates.makeList(currentRecipe, 'ingredient');
     const instructionList = domUpdates.makeList(currentRecipe, 'instructions');
     const price = currentRecipe.getCostOfIngredients(domUpdates.list);
-    let renderer = "";
+    let renderer;
+    //= "";
     const card =
     `<h1 class="recipe-title">${currentRecipe.name}</h1>
     <section class="recipe-card">
@@ -76,13 +78,13 @@ const domUpdates = {
       </article>
       </section>
       <section class="save-buttons">
-        <button onclick="saveRecipe(event.target.innerText);renderPantry(domUpdates.elements[5], domUpdates.pantry.userPantry);renderPantry(domUpdates.elements[6], domUpdates.pantry.shoppingList)"
+        <button onclick="domUpdates.pantry.calculateShoppingList(domUpdates.recipe.ingredients);saveRecipe(event.target.innerText);renderPantry(domUpdates.elements[5], domUpdates.pantry.userPantry);renderPantry(domUpdates.elements[6], domUpdates.pantry.shoppingList)"
         class="recipes-to-save-btn">Add To Saved Recipes</button>
         <button onclick="saveRecipe(event.target.innerText)"
         class="recipes-to-save-btn">Add To Favorites</button>
       </section>`;
     renderer = card;
-    domUpdates.elements[2].innerHTML = renderer;
+    domUpdates.elements[2].innerHTML += renderer;
   },
 
   renderRecipes(recipes, location, string) {
@@ -120,9 +122,14 @@ const domUpdates = {
         location.innerHTML += `<li>${ingredient.name} - ${item.amount} units</li>`;
       });
     });
+  },
+
+  needMoreStockError(event) {
+    event.target.innerText = "Need more ingredients. Check shopping list"
   }
 
 }
+window.needMoreStockError = domUpdates.needMoreStockError;
 
 window.domUpdates = domUpdates;
 
