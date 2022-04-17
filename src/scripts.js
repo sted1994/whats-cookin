@@ -80,6 +80,7 @@ document.addEventListener('keypress', function(event) {
 window.addEventListener('load', function() {
   domUpdates.displayElement([mainPage, myRecipes, recipeCardPage,  shoppingList, recipeSelectionPage], mainPage);
   errorMsg.classList.add("hidden")
+
 });
 
 homeTab.addEventListener('click', function() {
@@ -130,7 +131,7 @@ function getRandomUser() {
 
 const saveRecipe = (event) => {
   if(event === 'Add To Saved Recipes') {
-    currentUser.addToCookRecipes(currentRecipe);
+    checkPantry(currentRecipe.ingredients)
   } else if(event === 'Add To Favorites') {
     currentUser.addToFavRecipes(currentRecipe);
   };
@@ -208,5 +209,56 @@ const showError = (ingredient, amount) => {
 const clearInput = (input) => {
   input.value = ""
 };
+
+const checkPantry = (ingredients) => {
+  let cantCook = null
+  let idList = [];
+  currentPantry.userPantry.forEach(item => {
+    idList.push(item.ingredient)
+  })
+  for (var i = 0; i < currentPantry.userPantry.length; i++) {
+    console.log("WHAT", idList);
+    for (var j = 0; j < ingredients.length; j++) {
+      if ((currentPantry.userPantry[i].ingredient === ingredients[j].id) && (ingredients[j].quantity.amount > currentPantry.userPantry[i].amount)){
+        console.log("not enough in stock", ingredients[j]);
+        return cantCook = true;
+      } else if (((currentPantry.userPantry[i].ingredient === ingredients[j].id) && (ingredients[j].quantity.amount <= currentPantry.userPantry[i].amount))) {
+        console.log("WE GOT IT", ingredients[j]);
+        cantCook = false
+      } else if (!idList.includes(ingredients[j].id)) {
+        console.log("we dont got it", ingredients[j]);
+        console.log("NO", currentPantry.userPantry);
+        return cantCook = true
+      }
+    };
+    if (cantCook === false) {
+      currentUser.addToCookRecipes(currentRecipe);
+      return true
+    }
+  };
+
+  // let idList = [];
+  // let cantCook = null
+  // currentPantry.userPantry.forEach(stock => {
+  //   idList.push(stock.ingredient)
+  //   ingredients.forEach(ingredient => {
+  //     if ((stock.ingredient === ingredient.id) && (ingredient.quantity.amount > stock.amount)){
+  //       console.log("not enough in stock", ingredient);
+  //       cantCook = true;
+  //     } else if ((stock.ingredient === ingredient.id) && (ingredient.quantity.amount <= stock.amount)) {
+  //       console.log("WE GOT IT", ingredient);
+  //       cantCook = false
+  //     } else if (!idList.includes(ingredient.id)) {
+  //       console.log("we dont got it", ingredient);
+  //       cantCook = true
+  //     }
+  //   });
+  // });
+  // console.log("recipes to cook", currentUser.recipesToCook);
+  // if (cantCook === false) {
+  //   currentUser.addToCookRecipes(currentRecipe);
+  //   console.log("AFTER", currentUser.recipesToCook);
+  // };
+}
 
 window.assignCurrentRecipe = assignCurrentRecipe

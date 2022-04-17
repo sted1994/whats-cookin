@@ -100,7 +100,6 @@ const domUpdates = {
   renderPantry(location, list) {
     location.innerHTML = '';
     if (list === domUpdates.pantry.shoppingList) {
-      //domUpdates.pantry.calculateShoppingList(domUpdates.recipe.ingredients)
       domUpdates.pantry.shoppingList.map((item) => {
         console.log('THERE', domUpdates.pantry.shoppingList);
         domUpdates.list.forEach(ingredient => {
