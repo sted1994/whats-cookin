@@ -69,10 +69,13 @@
         <div class="my-recipes-box" id="recipes-to-cook">
           <h2 class="my-recipes-title">Ingredients On Hand</h2>
           <section class="add-ingredient">
-            <input type='text' class="ingredient-to-add" placeholder="Ingredient to add" ></input>
-            <input type='number' class="number-to-add" placeholder="Ingredient to add" ></input>
-            <button class="submit-ingredient"> Add Ingredient</button>
+            <form class="add-form" name="form">
+              <input type='text' class="ingredient-to-add" name="ingredient" placeholder="Ingredient to add"></input>
+              <input type='number' class="number-to-add" min="0" name="amount" step="0.5" placeholder="Amount to add"></input>
+              <button class="submit-ingredient" type="submit">Add Ingredient</button>
+            </form>
           </section>
+          <p class="error-msg">Sorry, the ingredient you entered is invalid</p>
           <ul class="pantry-list">
             <p class="list-item">Add ingredients to you pantry to see them here!</p>
             </ul>

@@ -46,6 +46,7 @@ const groceryList = document.querySelector('.shopping-list');
 const submitIngredientBtn = document.querySelector('.submit-ingredient')
 const ingredientToAdd = document.querySelector('.ingredient-to-add')
 const amountToAdd = document.querySelector('.number-to-add')
+const errorMsg = document.querySelector('.error-msg')
 
 const promise = Promise.all([data.recipes, data.ingredients, data.users]).then(results => {
    ingredients = results[1];
@@ -69,15 +70,16 @@ document.addEventListener('keypress', function(event) {
     domUpdates.displayElement([mainPage, myRecipes, recipeCardPage, shoppingList, recipeSelectionPage], recipeSelectionPage);
     domUpdates.showRecipes(newRecipeRepository, ingredients);
     newRecipeRepository.getAllRecipes(recipeDataClasses);
-    searchInput.value = "";
+    clearInput(searchInput);
   } else if(event.key === "Enter") {
     domUpdates.renderRecipes(currentUser.searchFavs(favSearch.value), favorites, "favRecipes");
-    favSearch.value = "";
+    clearInput(favSearch);
   };
 });
 
 window.addEventListener('load', function() {
   domUpdates.displayElement([mainPage, myRecipes, recipeCardPage,  shoppingList, recipeSelectionPage], mainPage);
+  errorMsg.classList.add("hidden")
 });
 
 homeTab.addEventListener('click', function() {
@@ -105,7 +107,7 @@ magButton.addEventListener('click', function() {
   domUpdates.displayElement([mainPage, myRecipes, recipeCardPage, shoppingList, recipeSelectionPage], recipeSelectionPage);
   domUpdates.showRecipes(newRecipeRepository, ingredients);
   newRecipeRepository.getAllRecipes(recipeDataClasses);
-  searchInput.value = "";
+  clearInpuut(searchInput);
 });
 
 clearFilterBtn.addEventListener('click', function(){
@@ -113,8 +115,12 @@ clearFilterBtn.addEventListener('click', function(){
 });
 
 submitIngredientBtn.addEventListener('click', function(event){
-  addIngredient(ingredientToAdd.value, parseInt(amountToAdd.value))
+  event.preventDefault()
+  addIngredient(ingredientToAdd.value, Number(amountToAdd.value))
+  showError(ingredientToAdd.value, Number(amountToAdd.value))
   domUpdates.renderPantry(pantry, domUpdates.pantry.userPantry)
+  clearInput(ingredientToAdd);
+  clearInput(amountToAdd);
 })
 
 function getRandomUser() {
@@ -175,9 +181,32 @@ const addIngredient = (ingredient, amount) => {
     } else if(item.name === ingredient && !domUpdates.pantry.userPantry.find(stock => item.id === stock.ingredient)){
       test.ingredient = item.id
       domUpdates.pantry.userPantry.push(test)
-    } else {
-      alert('you fucked up')
     }
   })
+  errorMsg.classList.add("hidden")
 }
+
+const showError = (ingredient, amount) => {
+  let error = true;
+  var a = document.forms["form"]["ingredient"].value;
+  var b = document.forms["form"]["amount"].value;
+  ingredients.forEach(item => {
+    if (ingredient === item.name) {
+      error = false;
+    };
+  });
+    if(!a || !b) {
+      errorMsg.innerText = "Motherfuckers, you need to fill in both fields before submitting!"
+      error = true;
+    };
+     if (error === true) {
+       errorMsg.classList.remove("hidden")
+  };
+    errorMsg.innerText = "Sorry, the ingredient you entered is invalid"
+};
+
+const clearInput = (input) => {
+  input.value = ""
+};
+
 window.assignCurrentRecipe = assignCurrentRecipe
