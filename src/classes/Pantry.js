@@ -4,7 +4,7 @@ export class Pantry {
     this.shoppingList = [];
   };
   calculateShoppingList(ingredients) {
-    console.log('HERE', ingredients);
+    //console.log('HERE', ingredients);
     if(!this.shoppingList[0]){
      ingredients.forEach(ingredient => {
        this.shoppingList.push(ingredient)
@@ -35,7 +35,6 @@ removeStockFromPantry(recipe) {
 
     recipe.ingredients.forEach(ingredient => {
       if(stock.ingredient === ingredient.id) {
-        console.log('POOP', stock.amount)
         stock.amount -= ingredient.quantity.amount
       }
     })
