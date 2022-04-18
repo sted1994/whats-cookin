@@ -1,10 +1,10 @@
+import { postIngredient } from '../scripts'
 export class Pantry {
   constructor(userPantry) {
     this.userPantry = userPantry;
     this.shoppingList = [];
   };
   calculateShoppingList(ingredients) {
-    console.log('HERE', ingredients);
     if(!this.shoppingList[0]){
      ingredients.forEach(ingredient => {
        this.shoppingList.push(ingredient)
@@ -22,7 +22,6 @@ export class Pantry {
       this.shoppingList.forEach(item => {
         if(item.id === stock.ingredient && item.quantity.amount <= stock.amount) {
           this.shoppingList.splice(this.shoppingList.indexOf(item), 1)
-          //stock.amount -= item.quantity.amount
         } else if(item.id === stock.ingredient && item.quantity.amount > stock.amount) {
           item.quantity.amount -= stock.amount
         }
@@ -30,14 +29,24 @@ export class Pantry {
     })
   };
 
-removeStockFromPantry(recipe) {
+removeStockFromPantry(recipe, currentUserId) {
   this.userPantry.forEach(stock => {
-
     recipe.ingredients.forEach(ingredient => {
       if(stock.ingredient === ingredient.id) {
-        console.log('POOP', stock.amount)
         stock.amount -= ingredient.quantity.amount
+        postIngredient(currentUserId, stock.ingredient, ingredient.quantity.amount, 'subb')
       }
+    })
+  })
+}
+
+removeFromShoppingList(recipe){
+  console.log(recipe.ingredients)
+  recipe.ingredients.forEach(ingredient => {
+    this.shoppingList.forEach(item => {
+       if(item.id === ingredient.id){
+         this.shoppingList.splice(this.shoppingList.indexOf(item))
+       }
     })
   })
 }

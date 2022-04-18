@@ -54,8 +54,7 @@ const domUpdates = {
     const ingredientList = domUpdates.makeList(currentRecipe, 'ingredient');
     const instructionList = domUpdates.makeList(currentRecipe, 'instructions');
     const price = currentRecipe.getCostOfIngredients(domUpdates.list);
-    let renderer;
-    //= "";
+    let renderer = "";
     const card =
     `<h1 class="recipe-title">${currentRecipe.name}</h1>
     <section class="recipe-card">
@@ -84,7 +83,7 @@ const domUpdates = {
         class="recipes-to-save-btn">Add To Favorites</button>
       </section>`;
     renderer = card;
-    domUpdates.elements[2].innerHTML += renderer;
+    domUpdates.elements[2].innerHTML = renderer;
   },
 
   renderRecipes(recipes, location, string) {
@@ -103,15 +102,9 @@ const domUpdates = {
     location.innerHTML = '';
     if (list === domUpdates.pantry.shoppingList) {
       domUpdates.pantry.shoppingList.map((item) => {
-        console.log('THERE', domUpdates.pantry.shoppingList);
         domUpdates.list.forEach(ingredient => {
           if (item.id === ingredient.id) {
-          //   domUpdates.pantry.userPantry.forEach(stock => {
-          //     if (stock.ingredient === item.id) {
                 location.innerHTML += `<li>${ingredient.name} - ${item.quantity.amount} units</li>`;
-            //   }
-            // })
-            // location.innerHTML += `<li>${ingredient.name} - ${item.quantity.amount} units</li>`;
           };
         });
       });

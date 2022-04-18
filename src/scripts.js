@@ -59,7 +59,7 @@ const promise = Promise.all([data.recipes, data.ingredients, data.users]).then(r
    })
    newRecipeRepository = new RecipeRepository(recipeDataClasses);
 }).then(randomUser => {
-  getRandomUser()
+  getRandomUser(usersData)
   currentPantry = new Pantry(currentUser.userInfo.pantry);
   domUpdates.pantry = currentPantry;
   domUpdates.renderPantry(pantry, domUpdates.pantry.userPantry)
@@ -168,8 +168,28 @@ const assignCurrentRecipe = (event) => {
   return currentRecipe
 }
 
+
+export const postIngredient = (userId, ingId, modAmount, modification) => {
+  if(modification === 'subb'){
+    modAmount = -modAmount
+  }
+  fetch("http://localhost:3001/api/v1/users", {
+    method: 'POST',
+    body: JSON.stringify({
+      userID: userId,
+      ingredientID: ingId,
+      ingredientModification: modAmount
+    }),
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  }).then(response => response.json())
+  .then(data => console.log(data))
+
+}
+
 const addIngredient = (ingredient, amount) => {
-  const test = {
+  const newPantryItem = {
     ingredient: null,
     amount: amount
   };
@@ -178,33 +198,33 @@ const addIngredient = (ingredient, amount) => {
       domUpdates.pantry.userPantry.forEach(stock => {
         if(item.id === stock.ingredient){
           stock.amount += amount
+          postIngredient(currentUser.userInfo.id, item.id, newPantryItem.amount, 'add')
         }
       })
     } else if(item.name === ingredient && !domUpdates.pantry.userPantry.find(stock => item.id === stock.ingredient)){
-      test.ingredient = item.id
-      domUpdates.pantry.userPantry.push(test)
+      newPantryItem.ingredient = item.id
+      postIngredient(currentUser.userInfo.id, item.id, newPantryItem.amount, 'add')
+      domUpdates.pantry.userPantry.push(newPantryItem)
     }
   })
   errorMsg.classList.add("hidden")
 }
 
 const showError = (ingredient, amount) => {
-  let error = true;
-  var a = document.forms["form"]["ingredient"].value;
-  var b = document.forms["form"]["amount"].value;
-  ingredients.forEach(item => {
-    if (ingredient === item.name) {
-      error = false;
-    };
-  });
-    if(!a || !b) {
-      errorMsg.innerText = "Both fields need to be filled"
-      error = true;
-    };
-     if (error === true) {
-       errorMsg.classList.remove("hidden")
-  };
-    errorMsg.innerText = "Sorry, the ingredient entered is invalid"
+  errorMsg.innerText = ""
+  const a = document.forms["form"]["ingredient"].value;
+  const b = document.forms["form"]["amount"].value;
+  const present = ingredients.filter(ingredients => ingredients.name === ingredient)
+
+  if(!a || !b) {
+    errorMsg.innerText = "Both fields need to be filled"
+    errorMsg.classList.remove("hidden")
+  } else if (!present[0]){
+      errorMsg.innerText = "Sorry, the ingredient entered is invalid"
+      errorMsg.classList.remove("hidden")
+  } else {
+    errorMsg.classList.add("hidden")
+  }
 };
 
 const clearInput = (input) => {
@@ -231,11 +251,12 @@ const checkPantry = (ingredients) => {
 
       }
     };
-    if (cantCook === false) {
-      currentUser.addToCookRecipes(currentRecipe);
-      currentPantry.removeStockFromPantry(currentRecipe)
-    }
   };
+  if (cantCook === false) {
+    currentPantry.removeFromShoppingList(currentRecipe)
+    currentUser.addToCookRecipes(currentRecipe);
+    currentPantry.removeStockFromPantry(currentRecipe, currentUser.userInfo.id)
+  }
 
 }
 
