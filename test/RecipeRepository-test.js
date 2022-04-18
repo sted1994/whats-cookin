@@ -41,7 +41,7 @@ describe('Recipe Repository', () => {
     });
 
     it('should find recipes by tag', () => {
-      recipeList.getRecipeByTag('antipasti');
+      recipeList.getRecipesBySearch('antipasti');
       expect(recipeList.recipes).to.includes(recipeData[0]);
     });
 
@@ -49,4 +49,7 @@ describe('Recipe Repository', () => {
       recipeList.getRecipesBySearch("Cookie");
       expect(recipeList.recipes).to.includes(recipeData[0]);
     });
+
+
 });
+/// sad path for if a recipe isn't found?

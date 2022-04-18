@@ -5,6 +5,7 @@ export class Pantry {
     this.shoppingList = [];
   };
   calculateShoppingList(ingredients) {
+
     if(!this.shoppingList[0]){
      ingredients.forEach(ingredient => {
        this.shoppingList.push(ingredient)
