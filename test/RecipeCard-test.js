@@ -77,3 +77,5 @@ it('should return the instructions', () => {
   expect(recipeCard.getInstructions()[0]).to.equal(recipeCard.instructions[0].instruction);
 });
 });
+
+//sad path for what should happen if the data is incomplete? or the data comes in different than expected?

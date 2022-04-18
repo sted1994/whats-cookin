@@ -85,4 +85,17 @@ describe("User", () => {
     user.removeFav(recipe2);
     expect(user.favRecipes[0]).to.equal(recipe);
   });
+
+  it("should be able to search favorite recipes", () => {
+    user.addToFavRecipes(recipeData[0]);
+    user.searchFavs('antipasti');
+    expect(user.searchFavs('antipasti')[0]).to.equal(recipeData[0])
+  })
+
+  it.only("should say if a search in favorite recipes does not match any recipes saved in favorite recipes", () => {
+    user.addToFavRecipes(recipeData[0]);
+    user.searchFavs('bacon');
+    expect(user.searchFavs('bacon').length).to.equal(0)
+  })
+
 });
