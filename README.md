@@ -38,11 +38,13 @@ Visit the [website](https://sted1994.github.io/whats-cookin-starter-kit/).
 ![attempt 3](https://user-images.githubusercontent.com/96502923/161652561-b98a927f-e50a-4941-8239-77fdfe8a2a86.gif)
 
 - Add to Favorites and Delete
+![One cookin](https://user-images.githubusercontent.com/96502923/163898283-df4b0518-a2a6-4a84-a3d8-359d6fb9bea4.gif)
 
 
 
 - Search Favorites by name and by tag
 
+![two cookin](https://user-images.githubusercontent.com/96502923/163898467-21390917-f235-44d2-9ba1-a33aa1fc979c.gif)
 
 
 - Add to Recipes To Cook and Delete
@@ -51,11 +53,13 @@ Visit the [website](https://sted1994.github.io/whats-cookin-starter-kit/).
 
 - Add ingredients to shopping list
 
+![Cookin 666](https://user-images.githubusercontent.com/96502923/163899173-9a9a13b8-ccea-4764-beca-c752d6fbd460.gif)
 
 
 - Add ingredients to pantry
 
+![cookin add salt](https://user-images.githubusercontent.com/96502923/163899344-c527b97d-f4fa-4164-9443-ca1f981f6d46.gif)
 
 
 ### What is next?
-The next part of this project will work with the prices, shopping list, and user pantry, as outlined in part 2 of this project.
+Fine tune some of the user experience, and change 'units' to what the unit is, such as cups, tsp, esp.  
