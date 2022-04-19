@@ -23,6 +23,7 @@ let ingredients;
 let usersData;
 let recipeDataClasses;
 let currentPantry;
+let focus;
 
 const mainPage = document.querySelector('.main');
 const allRecipesTab = document.querySelector('.all-recipes');
@@ -59,28 +60,38 @@ const promise = Promise.all([data.recipes, data.ingredients, data.users]).then(r
    })
    newRecipeRepository = new RecipeRepository(recipeDataClasses);
 }).then(randomUser => {
-  getRandomUser(usersData)
+  getRandomUser(usersData);
   currentPantry = new Pantry(currentUser.userInfo.pantry);
   domUpdates.pantry = currentPantry;
-  domUpdates.renderPantry(pantry, domUpdates.pantry.userPantry)
-});
+  domUpdates.renderPantry(pantry, domUpdates.pantry.userPantry);
+}).catch(error => console.log("Failed to retrieve data. Reload page."));
 
 document.addEventListener('keypress', function(event) {
   if(event.key === "Enter" && searchInput.value){
-    newRecipeRepository.getRecipesBySearch(searchInput.value);
-    domUpdates.displayElement([mainPage, myRecipes, recipeCardPage, shoppingList, recipeSelectionPage], recipeSelectionPage);
-    domUpdates.showRecipes(newRecipeRepository, ingredients);
-    newRecipeRepository.getAllRecipes(recipeDataClasses);
-    clearInput(searchInput);
-  } else if(event.key === "Enter") {
+    if(newRecipeRepository.getRecipesBySearch(searchInput.value).length >= 1) {
+      newRecipeRepository.getRecipesBySearch(searchInput.value);
+      domUpdates.displayElement([mainPage, myRecipes, recipeCardPage, shoppingList,   recipeSelectionPage], recipeSelectionPage);
+      domUpdates.showRecipes(newRecipeRepository, ingredients);
+      newRecipeRepository.getAllRecipes(recipeDataClasses);
+      clearInput(searchInput);
+    } else if (newRecipeRepository.getRecipesBySearch(searchInput.value).length === 0){
+      searchInput.value = "Sorry we don't have that. Try again.";
+      searchInput.style.color = "red";
+      setTimeout(() => {clearInput(searchInput), searchInput.style.color = "black"}, 2000);
+    }
+  } else if(event.key === "Enter" && favSearch.value) {
     domUpdates.renderRecipes(currentUser.searchFavs(favSearch.value), favorites, "favRecipes");
     clearInput(favSearch);
-  };
+  } else if (event.key === "Enter" && focus === 5){
+    searchInput.value = "Please enter a search value";
+    searchInput.style.color = "red";
+    setTimeout(() => {clearInput(searchInput), searchInput.style.color = "black"}, 2000);
+  }
 });
 
 window.addEventListener('load', function() {
   domUpdates.displayElement([mainPage, myRecipes, recipeCardPage,  shoppingList, recipeSelectionPage], mainPage);
-  errorMsg.classList.add("hidden")
+  errorMsg.classList.add("hidden");
 
 });
 
@@ -94,8 +105,8 @@ myRecipesTab.addEventListener('click', function() {
 
 shoppingTab.addEventListener('click', function() {
   domUpdates.displayElement([mainPage, myRecipes, recipeCardPage, shoppingList, recipeSelectionPage], shoppingList);
-  pantry.classList.remove("hidden")
-  groceryList.classList.remove("hidden")
+  pantry.classList.remove("hidden");
+  groceryList.classList.remove("hidden");
 });
 
 allRecipesTab.addEventListener('click', function(){
@@ -109,7 +120,7 @@ magButton.addEventListener('click', function() {
   domUpdates.displayElement([mainPage, myRecipes, recipeCardPage, shoppingList, recipeSelectionPage], recipeSelectionPage);
   domUpdates.showRecipes(newRecipeRepository, ingredients);
   newRecipeRepository.getAllRecipes(recipeDataClasses);
-  clearInpuut(searchInput);
+  clearInput(searchInput);
 });
 
 clearFilterBtn.addEventListener('click', function(){
@@ -117,10 +128,10 @@ clearFilterBtn.addEventListener('click', function(){
 });
 
 submitIngredientBtn.addEventListener('click', function(event){
-  event.preventDefault()
-  addIngredient(ingredientToAdd.value, Number(amountToAdd.value))
-  showError(ingredientToAdd.value, Number(amountToAdd.value))
-  domUpdates.renderPantry(pantry, domUpdates.pantry.userPantry)
+  event.preventDefault();
+  addIngredient(ingredientToAdd.value, Number(amountToAdd.value));
+  showError(ingredientToAdd.value, Number(amountToAdd.value));
+  domUpdates.renderPantry(pantry, domUpdates.pantry.userPantry);
   clearInput(ingredientToAdd);
   clearInput(amountToAdd);
 })
@@ -132,7 +143,7 @@ function getRandomUser() {
 
 const saveRecipe = (event) => {
   if(event === 'Add To Saved Recipes') {
-    checkPantry(currentRecipe.ingredients)
+    checkPantry(currentRecipe.ingredients);
   } else if(event === 'Add To Favorites') {
     currentUser.addToFavRecipes(currentRecipe);
   };
@@ -165,13 +176,13 @@ const assignCurrentRecipe = (event) => {
       domUpdates.recipe = recipe;
     };
   });
-  return currentRecipe
-}
+  return currentRecipe;
+};
 
 
 export const postIngredient = (userId, ingId, modAmount, modification) => {
   if(modification === 'subb'){
-    modAmount = -modAmount
+    modAmount = -modAmount;
   }
   fetch("http://localhost:3001/api/v1/users", {
     method: 'POST',
@@ -184,9 +195,9 @@ export const postIngredient = (userId, ingId, modAmount, modification) => {
       'Content-Type': 'application/json'
     }
   }).then(response => response.json())
-  .then(data => console.log(data))
+  .then(data => console.log(data.message))
 
-}
+};
 
 const addIngredient = (ingredient, amount) => {
   const newPantryItem = {
@@ -197,67 +208,67 @@ const addIngredient = (ingredient, amount) => {
     if(item.name === ingredient && domUpdates.pantry.userPantry.find(stock => item.id === stock.ingredient)){
       domUpdates.pantry.userPantry.forEach(stock => {
         if(item.id === stock.ingredient){
-          stock.amount += amount
-          postIngredient(currentUser.userInfo.id, item.id, newPantryItem.amount, 'add')
-        }
-      })
+          stock.amount += amount;
+          postIngredient(currentUser.userInfo.id, item.id, newPantryItem.amount, 'add');
+        };
+      });
     } else if(item.name === ingredient && !domUpdates.pantry.userPantry.find(stock => item.id === stock.ingredient)){
-      newPantryItem.ingredient = item.id
-      postIngredient(currentUser.userInfo.id, item.id, newPantryItem.amount, 'add')
-      domUpdates.pantry.userPantry.push(newPantryItem)
-    }
-  })
-  errorMsg.classList.add("hidden")
-}
+      newPantryItem.ingredient = item.id;
+      postIngredient(currentUser.userInfo.id, item.id, newPantryItem.amount, 'add');
+      domUpdates.pantry.userPantry.push(newPantryItem);
+    };
+  });
+  errorMsg.classList.add("hidden");
+};
 
 const showError = (ingredient, amount) => {
-  errorMsg.innerText = ""
+  errorMsg.innerText = "";
   const a = document.forms["form"]["ingredient"].value;
   const b = document.forms["form"]["amount"].value;
-  const present = ingredients.filter(ingredients => ingredients.name === ingredient)
+  const present = ingredients.filter(ingredients => ingredients.name === ingredient);
 
   if(!a || !b) {
-    errorMsg.innerText = "Both fields need to be filled"
-    errorMsg.classList.remove("hidden")
+    errorMsg.innerText = "Both fields need to be filled";
+    errorMsg.classList.remove("hidden");
   } else if (!present[0]){
-      errorMsg.innerText = "Sorry, the ingredient entered is invalid"
-      errorMsg.classList.remove("hidden")
+      errorMsg.innerText = "Sorry, the ingredient entered is invalid";
+      errorMsg.classList.remove("hidden");
   } else {
-    errorMsg.classList.add("hidden")
+    errorMsg.classList.add("hidden");
   }
 };
 
 const clearInput = (input) => {
-  input.value = ""
+  input.value = "";
 };
 
 const checkPantry = (ingredients) => {
   let cantCook = true;
   let idList = [];
   currentPantry.userPantry.forEach(item => {
-    idList.push(item.ingredient)
-  })
+    idList.push(item.ingredient);
+  });
   for (var i = 0; i < currentPantry.userPantry.length; i++) {
     for (var j = 0; j < ingredients.length; j++) {
       if ((currentPantry.userPantry[i].ingredient === ingredients[j].id) && (ingredients[j].quantity.amount > currentPantry.userPantry[i].amount)){
          cantCook = true;
-         domUpdates.needMoreStockError(event)
+         domUpdates.needMoreStockError(event);
 
       } else if (((currentPantry.userPantry[i].ingredient === ingredients[j].id) && (ingredients[j].quantity.amount <= currentPantry.userPantry[i].amount))) {
-        cantCook = false
+        cantCook = false;
       } else if (!idList.includes(ingredients[j].id)) {
-         cantCook = true
-         domUpdates.needMoreStockError(event)
+         cantCook = true;
+         domUpdates.needMoreStockError(event);
 
       }
     };
   };
   if (cantCook === false) {
-    currentPantry.removeFromShoppingList(currentRecipe)
+    currentPantry.removeFromShoppingList(currentRecipe);
     currentUser.addToCookRecipes(currentRecipe);
-    currentPantry.removeStockFromPantry(currentRecipe, currentUser.userInfo.id)
-  }
+    currentPantry.removeStockFromPantry(currentRecipe, currentUser.userInfo.id);
+  };
 
-}
+};
 
-window.assignCurrentRecipe = assignCurrentRecipe
+window.assignCurrentRecipe = assignCurrentRecipe;

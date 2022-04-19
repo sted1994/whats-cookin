@@ -50,7 +50,7 @@ const domUpdates = {
   },
 
   formatRecipeCard(event) {
-    let currentRecipe = assignCurrentRecipe(event)
+    let currentRecipe = assignCurrentRecipe(event);
     const ingredientList = domUpdates.makeList(currentRecipe, 'ingredient');
     const instructionList = domUpdates.makeList(currentRecipe, 'instructions');
     const price = currentRecipe.getCostOfIngredients(domUpdates.list);
@@ -108,20 +108,21 @@ const domUpdates = {
           };
         });
       });
-    }
+    };
     list.map((item) => {
       domUpdates.list.forEach(ingredient => {
-        if (item.ingredient === ingredient.id)
-        location.innerHTML += `<li>${ingredient.name} - ${item.amount} units</li>`;
+        if (item.ingredient === ingredient.id) {
+          location.innerHTML += `<li>${ingredient.name} - ${item.amount} units</li>`;
+        };
       });
     });
   },
 
   needMoreStockError(event) {
-    event.target.innerText = "Need more ingredients. Check shopping list"
+    event.target.innerText = "Need more ingredients. Check shopping list";
   }
 
-}
+};
 window.needMoreStockError = domUpdates.needMoreStockError;
 
 window.domUpdates = domUpdates;

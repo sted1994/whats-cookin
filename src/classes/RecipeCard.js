@@ -13,7 +13,7 @@ getIngredients(ingredients) {
   const ingredientList = this.ingredients.reduce((arr, ingredient) => {
     const items = ingredients.forEach(item => {
       if(ingredient.id === item.id) {
-        arr.push(`${ingredient.quantity.amount.toFixed(2)} ${ingredient.quantity.unit} ${item.name}`);
+        arr.push(`${ingredient.quantity.amount.toFixed(2)} ${ingredient.quantity.unit}; ${item.name}`);
       };
     });
     return arr;

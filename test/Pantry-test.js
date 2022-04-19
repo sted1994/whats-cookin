@@ -18,11 +18,11 @@ describe('Pantry', () => {
       "quantity": {
         "amount": 10,
         "unit": "c"
-      }
-    }
+      };
+    };
 
-  ]
-}
+  ];
+};
 
   let userOne = {
     id: 1,
@@ -84,32 +84,32 @@ describe('Pantry', () => {
       quantity: {
         amount: 10,
         unit: "c"
-      }
-    })
-  })
+      };
+    });
+  });
 
   it("should be able to add ingredients not in pantry to the shopping list", () => {
-    pantry.calculateShoppingList(recipeIngredients.ingredients)
-    expect(pantry.shoppingList[pantry.shoppingList.length - 1].id).to.equal (recipeIngredients.ingredients[1].id)
-  })
+    pantry.calculateShoppingList(recipeIngredients.ingredients);
+    expect(pantry.shoppingList[pantry.shoppingList.length - 1].id).to.equal (recipeIngredients.ingredients[1].id);
+  });
 
   it("should be able to say if a user's pantry has enough ingredients to cook a given meal", () => {
-    recipeIngredients.ingredients[1].id = 1082047
-    pantry.calculateShoppingList(recipeIngredients.ingredients)
-    expect(pantry.shoppingList.length).to.equal(0)
-  })
+    recipeIngredients.ingredients[1].id = 1082047;
+    pantry.calculateShoppingList(recipeIngredients.ingredients);
+    expect(pantry.shoppingList.length).to.equal(0);
+  });
 
   it("should be able to remove stock from Pantry", () => {
-    pantry.removeStockFromPantry(recipeIngredients)
-    expect(pantry.userPantry[2].amount).to.equal(0)
-  })
+    pantry.removeStockFromPantry(recipeIngredients);
+    expect(pantry.userPantry[2].amount).to.equal(0);
+  });
 
   it("should be able to determine the amount of an ingredient still needed to cook a given meal", () => {
-    recipeIngredients.ingredients[1].id = 11457
-pantry.userPantry[2].amount = 10
-    recipeIngredients.ingredients[0].quantity.amount = 15
-    pantry.calculateShoppingList(recipeIngredients.ingredients)
-    expect(pantry.shoppingList[0].quantity.amount).to.equal(5)
-  })
+    recipeIngredients.ingredients[1].id = 11457;
+    pantry.userPantry[2].amount = 10;
+    recipeIngredients.ingredients[0].quantity.amount = 15;
+    pantry.calculateShoppingList(recipeIngredients.ingredients);
+    expect(pantry.shoppingList[0].quantity.amount).to.equal(5);
+  });
 
 });
