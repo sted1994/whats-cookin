@@ -19,6 +19,7 @@ getRecipesBySearch(input) {
       });
     });
   this.recipes = recipesByName.concat(recipesByTag);
+  return this.recipes;
 };
 
   getAllRecipes(recipes) {

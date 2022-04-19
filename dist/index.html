@@ -9,31 +9,18 @@
   <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300&display=swap" rel="stylesheet">
   <body>
     <nav class="nav-bar">
-      <p class="home nav-button">Home</p>
-      <p class="saved-recipes nav-button">Saved Recipes</p>
-      <p class="shopping-list-tab nav-button">Shopping List</p>
-      <p class="all-recipes nav-button">All Recipes</p>
+      <p tabindex="1" class="home nav-button">Home</p>
+      <p tabindex="2" class="saved-recipes nav-button">Saved Recipes</p>
+      <p tabindex="3" class="shopping-list-tab nav-button">Shopping List</p>
+      <p tabindex="4" class="all-recipes nav-button">All Recipes</p>
     </nav>
     <main class="main">
       <h1>What's Cookin'</h1>
         <div class="homepage-actions">
           <section class="search-bar">
             <label class="hidden" for="search-input">Search Recipes</label>
-            <input class="search-bar" id="search-input" type="text" placeholder="WHATS ON THE MENU?">
-            <button class="mag-btn"><img class="magnifier-icon" src="images/magnifying-glass.png" alt="magnifier"></button>
-          </section>
-          <section class="carousel__track-content">
-            <img class="carousel__button" src="images/left-arrow.png" alt="">
-            <ul class="carousel__track">
-              <li class="carousel__list"><img class="carousel__slide" src="images/beef.png" alt="beef"></li>
-              <li class="carousel__list"><img class="carousel__slide" src="images/chicken.png" alt="chicken"></li>
-              <li class="carousel__list"><img class="carousel__slide" src="images/pork.png" alt="pork"></li>
-              <li class="carousel__list"><img class="carousel__slide" src="images/vegitarian.png" alt="vegitarian"></li>
-              <li class="carousel__list"><img class="carousel__slide" src="images/vegitarian.png" alt="vegitarian"></li>
-              <li class="carousel__list"><img class="carousel__slide" src="images/vegitarian.png" alt="vegitarian"></li>
-              <li class="carousel__list"><img class="carousel__slide" src="images/vegitarian.png" alt="vegitarian"></li>
-            </ul>
-            <img class="right carousel__button" src="images/right-arrow.png" alt="">
+            <input tabindex="5" class="search-bar" id="search-input" type="text" placeholder="WHATS ON THE MENU?">
+            <button tabindex="6" class="mag-btn"><img class="magnifier-icon" src="images/magnifying-glass.png" alt="magnifier"></button>
           </section>
         </div>
     </main>

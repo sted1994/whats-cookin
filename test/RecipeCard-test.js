@@ -15,19 +15,19 @@ describe('Recipe Card', () => {
             "quantity": {
               "amount": 1.5,
               "unit": "c"
-            }
-          }
+            };
+          };
         ],
         "instructions": [
           {
             "instruction": "In a large mixing bowl, whisk together the dry ingredients (flour, pudding mix, soda and salt). Set aside.In a large mixing bowl of a stand mixer, cream butter for 30 seconds. Gradually add granulated sugar and brown sugar and cream until light and fluffy.",
             "number": 1
-          }
+          };
         ],
         "name": "Loaded Chocolate Chip Pudding Cookie Cups",
         "tags": [
           "antipasti",
-        ]
+        ];
       };
       ingredients = [{
         "id": 20081,
