@@ -63,4 +63,3 @@ Visit the [website](https://sted1994.github.io/whats-cookin-starter-kit/).
 
 ### What is next?
 Fine tune some of the user experience, and change 'units' to what the unit is, such as cups, tsp, esp.  
-[![Tyler's GitHub stats](https://github-readme-stats.vercel.app/api?username=sted1994)](https://github.com/sted1994/github-readme-stats)
