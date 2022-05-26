@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>What's Cookin'</title>
+  </head>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300&display=swap" rel="stylesheet">
+  <body>
+    <nav class="nav-bar">
+      <p tabindex="1" class="home nav-button">Home</p>
+      <p tabindex="2" class="saved-recipes nav-button">Saved Recipes</p>
+      <p tabindex="3" class="shopping-list-tab nav-button">Shopping List</p>
+      <p tabindex="4" class="all-recipes nav-button">All Recipes</p>
+    </nav>
+    <main class="main">
+      <h1>What's Cookin'</h1>
+        <div class="homepage-actions">
+          <section class="search-bar">
+            <label class="hidden" for="search-input">Search Recipes</label>
+            <input tabindex="5" class="search-bar" id="search-input" type="text" placeholder="WHATS ON THE MENU?">
+            <button tabindex="6" class="mag-btn"><img class="magnifier-icon" src="images/magnifying-glass.png" alt="magnifier"></button>
+          </section>
+        </div>
+    </main>
+    <section class="recipe-selection hidden">
+      /*this will be where the recipes are generated*/
+    </section>
+    <section class="my-recipes hidden">
+      <h1 class="my-recipes-title">My Recipes</h1>
+      <div class="my-recipes-flexbox">
+        <div class="my-recipes-box" id="recipes-to-cook">
+          <h2 class="my-recipes-title">Recipes To Cook</h2>
+          <ul class="recipes-to-cook-list">
+            <p class="list-item">Search for recipes then add to recipes to cook to see them here</p>
+            </ul>
+        </div>
+        <div class="my-recipes-box" id="fav-recipes">
+          <h2 class="my-recipes-title">Favorite Recipes</h2>
+          <label class="hidden" for="recipe-search-input">Search Recipes</label>
+          <input type="text" id="recipe-search-input" name="recipe-search" placeholder="Search Recipes">
+          <button class="clear-filter-Btn">Clear Filters</button>
+          <ul class="favorite-recipes-list">
+            <p class="list-item">Add recipes to favorites to see them here</p>
+          </ul>
+        </div>
+      </div>
+    </section>
+    <section class="display-recipe hidden">
+      <!-- This is where Recipe Card will displpay -->
+    </section>
+    <section class="shopping-list-page hidden">
+      <h1 class="my-recipes-title">Shopping List</h1>
+      <div class="my-recipes-flexbox">
+        <div class="my-recipes-box" id="recipes-to-cook">
+          <h2 class="my-recipes-title">Ingredients On Hand</h2>
+          <section class="add-ingredient">
+            <form class="add-form" name="form">
+              <input type='text' id='ingredient' class="ingredient-to-add" name="ingredient" placeholder="Ingredient to add"></input>
+              <label class="hidden" for="ingredient">ingredient name</label>
+              <input type='number' id='amount' class="number-to-add" min="0" name="amount" step="0.5" placeholder="Amount to add"></input>
+              <label class="hidden" for="amount">ingredient amount</label>
+              <button class="submit-ingredient" type="submit">Add Ingredient</button>
+            </form>
+          </section>
+          <p class="error-msg">Sorry, the ingredient you entered is invalid</p>
+          <ul class="pantry-list">
+            <p class="list-item">Add ingredients to you pantry to see them here!</p>
+            </ul>
+        </div>
+        <div class="my-recipes-box" id="fav-recipes">
+          <h2 class="my-recipes-title">Ingredients To Buy</h2>
+          <ul class="shopping-list">
+            <p class="list-item">Add ingredients to your shopping list to see them here!</p>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </body>
+  <script src="bundle.js"></script>
+</html>
