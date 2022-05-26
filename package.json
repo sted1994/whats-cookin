@@ -7,6 +7,7 @@
     "start": "webpack serve",
     "build": "webpack",
     "test": "mochapack 'test/**/*.js'",
+    "predeploy": "npm run build",
     "deploy": "gh-pages -d dist"
   },
   "author": "Turing School of Software and Design",
