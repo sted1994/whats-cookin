@@ -809,9 +809,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "data": () => (/* binding */ data)
 /* harmony export */ });
-const recipes = fetch('http://whats-cookin-api.netlify.app/api/v1/recipes').then(response => response.json());
-const ingredients = fetch('	http://whats-cookin-api.netlify.app/api/v1/ingredients').then(response => response.json());
-const users = fetch('http://whats-cookin-api.netlify.app/api/v1/users').then(response => response.json());
+const recipes = fetch('https://whats-cookin-api.netlify.app/data/recipes.js').then(response => response.json());
+const ingredients = fetch('https://whats-cookin-api.netlify.app/data/ingredients.js').then(response => response.json());
+const users = fetch('https://whats-cookin-api.netlify.app/data/users.js').then(response => response.json());
 const data = {
   recipes: recipes,
   users: users,
